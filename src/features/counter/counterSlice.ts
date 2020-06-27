@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk, RootState } from '../../app/store';
+import { push } from 'connected-react-router';
 
 interface CounterState {
   value: number;
@@ -39,6 +40,7 @@ export const { increment, decrement, incrementByAmount } = counterSlice.actions;
 export const incrementAsync = (amount: number): AppThunk => dispatch => {
   setTimeout(() => {
     dispatch(incrementByAmount(amount));
+    dispatch(push('/home'))
   }, 1000);
 };
 
