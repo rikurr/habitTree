@@ -7,6 +7,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider as MaterialThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { theme } from './Theme';
+import './index.css'
+import CssBaseline from '@material-ui/core/CssBaseline';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
@@ -14,9 +16,11 @@ ReactDOM.render(
     <Provider store={store}>
       <MaterialThemeProvider theme={theme}>
         <StyledThemeProvider theme={theme}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <CssBaseline>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </CssBaseline>
         </StyledThemeProvider>
       </MaterialThemeProvider>
     </Provider>

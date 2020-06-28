@@ -10,7 +10,7 @@ const Footer = () => {
       </p>
       <p>
         Copyright &copy; 2020{' '}
-        <a href='https://github.com/riku0329/progress-tree' target='blank'>
+        <a href='https://github.com/riku0329/habit' target='blank'>
           progress tree
         </a>
         . All rights reserved.

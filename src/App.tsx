@@ -1,11 +1,15 @@
 import React from 'react';
 import Router from './Router';
+import { Navbar } from './components/Navbar';
 
 function App() {
   return (
-    <main>
-      <Router />
-    </main>
+    <>
+      <Navbar />
+      <main>
+        <Router />
+      </main>
+    </>
   );
 }
 
