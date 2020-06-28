@@ -1,11 +1,12 @@
-import React from "react"
+import React from 'react';
+import { Hero } from '../components/HomeGuest';
 
 const HomeGuest = () => {
   return (
     <>
-      HomeGuest
+      <Hero />
     </>
-  )
-}
+  );
+};
 
-export {HomeGuest}
+export { HomeGuest };
