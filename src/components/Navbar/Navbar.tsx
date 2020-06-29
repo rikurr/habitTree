@@ -18,6 +18,8 @@ import { ArrowBack, AccountCircle, Home, Search } from '@material-ui/icons';
 import SortIcon from '@material-ui/icons/Sort';
 import MenuIcon from '@material-ui/icons/Menu';
 import { auth } from '../../firebase';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser, signOut } from '../../redux/modules/users';
 
 const useStyles = makeStyles({
   menuSliderWrap: {
@@ -39,19 +41,21 @@ type NavbarState = {
 };
 
 const Navbar = () => {
+  const user = useSelector(selectUser);
   const history = useHistory();
+  const dispatch = useDispatch();
   const [state, setState] = useState<NavbarState>({
     right: false,
   });
 
-  // const toggleAuth = (login: boolean): any => {
-  //   if (login) {
-  //     auth.signOut();
-  //     history.push('/');
-  //   } else {
-  //     history.push('/login');
-  //   }
-  // };
+  const toggleAuth = (login: boolean): any => {
+    if (login) {
+      dispatch(signOut())
+      history.push('/homeguest');
+    } else {
+      history.push('/signin');
+    }
+  };
 
   const toggleSlider = (slider: string, open: boolean) => () => {
     setState({ ...state, [slider]: open });
@@ -86,11 +90,13 @@ const Navbar = () => {
           </ListItemIcon>
           <ListItemText primary='フィード' />
         </ListItem>
-        <ListItem onClick={() => auth.signOut()} button>
+        <ListItem onClick={() => toggleAuth(user.isSignedIn)} button>
           <ListItemIcon>
             <AccountCircle />
           </ListItemIcon>
-          <ListItemText primary='ログアウト' />
+          <ListItemText
+            primary={user.isSignedIn ? 'サインアウト' : 'サインイン'}
+          />
         </ListItem>
       </List>
     </Box>

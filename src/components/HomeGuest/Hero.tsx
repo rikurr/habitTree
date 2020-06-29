@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import hero from '../../assets/hero.svg';
-import { Grid, Typography, Button, Box } from '@material-ui/core';
+import { Grid, Typography, Box } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { CustomButton } from '../UIkit';
 

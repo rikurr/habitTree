@@ -11,6 +11,7 @@ import {
 import { Form, ShowPassword, ButtonWrap } from './FormStyled';
 import { signIn, signUp } from '../../redux/modules/users';
 import { signInWithGoogle } from '../../firebase';
+import { flashMessage } from '../../redux/modules/flashMessages';
 
 type SignInState = {
   email: string;
@@ -95,12 +96,12 @@ const SignIn = () => {
   const guestUserLogin = async () => {
     immerDispatch({ type: 'clickButton' });
     try {
-      const username = `user${
+      const guestName = `user${
         Math.floor(Math.random() * (max + 1 - min)) + min
       }`;
-      const guestEmail = `${username}@test.com`;
-      disaptch(signUp(username, guestEmail, 'password'));
-      immerDispatch({ type: 'resetValue' });
+      const guestEmail = `${guestName}@test.com`;
+      await disaptch(signUp(guestName, guestEmail, 'password'));
+      immerDispatch({ type: 'resetValue' })
       history.push('/');
     } catch (error) {
       immerDispatch({
@@ -112,7 +113,8 @@ const SignIn = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      signInWithGoogle().then(() => {
+      signInWithGoogle().then(async () => {
+        disaptch(flashMessage('Google認証でサインインしました'));
         history.push('/');
       });
     } catch (error) {

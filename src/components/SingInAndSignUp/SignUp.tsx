@@ -97,7 +97,7 @@ const SignUp = () => {
     try {
       await disaptch(signUp(username, email, password));
       immerDispatch({ type: 'resetValue' });
-      history.push('/create-active');
+      history.push('/');
     } catch (error) {
       immerDispatch({
         type: 'valideteError',

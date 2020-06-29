@@ -59,6 +59,10 @@ export const usersSlice = createSlice({
     signInFailure: (state) => {
       state.isFetching = false;
     },
+    signOutSuccess: (state, action: PayloadAction<CurrentUserProps>) => {
+      state.isSignedIn = false;
+      state.currentUser = action.payload;
+    },
   },
 });
 
@@ -66,9 +70,10 @@ export const {
   setCurrentUser,
   signInSuccess,
   signInFailure,
+  signOutSuccess,
 } = usersSlice.actions;
 
-const createUserDocument = async (user: any, addDate?: any) => {
+const createUserDocument = async (user: any, addData?: any) => {
   const uid = user.uid;
   const userRef = usersRef.doc(uid);
   const snapShot = await userRef.get();
@@ -84,8 +89,9 @@ const createUserDocument = async (user: any, addDate?: any) => {
       hasHabit: 0,
       maxHabit: 1,
       likeHabitCount: 0,
+      ...addData,
     };
-    usersRef.doc(uid).set(userInitialDate);
+    await userRef.set(userInitialDate);
   }
   return userRef;
 };
@@ -93,11 +99,18 @@ const createUserDocument = async (user: any, addDate?: any) => {
 export const listenAuthState = (): AppThunk => async (dispatch) => {
   return auth.onAuthStateChanged(async (user) => {
     if (user) {
-      const userRef = await createUserDocument(user);
-      userRef.get().then((snapshot) => {
-        const data = snapshot.data() as CurrentUserProps;
-        dispatch(signInSuccess(data));
-      });
+      if (user.displayName) {
+        await createUserDocument(user);
+      }
+      const uid = user.uid;
+      console.log('render');
+      usersRef
+        .doc(uid)
+        .get()
+        .then((snapshot) => {
+          const data = snapshot.data() as CurrentUserProps;
+          dispatch(signInSuccess(data));
+        });
     } else {
       dispatch(signInFailure());
     }
@@ -140,30 +153,32 @@ export const signUp = (
     .createUserWithEmailAndPassword(email, password)
     .then((result) => {
       const user = result.user;
+      console.log(user);
       if (user) {
-        const uid = user.uid;
-        const timestamp = FirebaseTimestamp.now();
-        const userInitialDate: UserModel = {
-          username: username,
-          email: email,
-          uid: uid,
-          created_at: timestamp,
-          updated_at: timestamp,
-          hasHabit: 0,
-          maxHabit: 1,
-          likeHabitCount: 0,
-        };
-        usersRef
-          .doc(uid)
-          .set(userInitialDate)
-          .then(async () => {
-            dispatch(flashMessage('アカウント登録が成功しました'));
-          });
+        createUserDocument(user, { username }).then(() => {
+          dispatch(flashMessage('アカウントを登録しました'));
+        });
       }
     })
-    .catch((error) => {
+    .catch(() => {
       throw new Error('アカウント登録に失敗しました。もう1度お試しください。');
     });
+};
+
+export const signOut = (): AppThunk => async (dispatch) => {
+  const initialState = {
+    id: '',
+    username: '',
+    email: '',
+    created_at: null,
+    updated_at: null,
+    hasActivity: 0,
+    maxActivity: 1,
+    likeActivityCount: 0,
+  };
+  auth.signOut().then(() => {
+    dispatch(signOutSuccess(initialState));
+  });
 };
 
 export const selectUser = (state: RootState) => state.users;
