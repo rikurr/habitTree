@@ -5,7 +5,7 @@ import {
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
 
-
+import { userReducer } from './modules';
 import counterReducer from '../features/counter/counterSlice';
 
 const customizedMiddleware = getDefaultMiddleware({
@@ -14,6 +14,7 @@ const customizedMiddleware = getDefaultMiddleware({
 
 const rootReducer = () => ({
   counter: counterReducer,
+  users: userReducer,
 });
 
 const middleware = [...customizedMiddleware];
