@@ -168,19 +168,19 @@ const SignIn = () => {
           color='primary'
           onClick={handleSubmit}
           disabled={state.send}
-          label='ログイン'
+          label='サインイン'
         />
         <CustomButton
           onClick={handleGoogleSignIn}
           disabled={state.send}
-          label='Googleアカウントでログイン'
+          label='Googleアカウントでサインイン'
           bgColor='isGoogle'
         />
         <CustomButton
           color='secondary'
           onClick={guestUserLogin}
           disabled={state.send}
-          label='ゲストユーザーでログイン'
+          label='ゲストユーザーでサインイン'
         />
       </ButtonWrap>
     </Form>

@@ -6,12 +6,12 @@ type Props = {
 };
 
 const Layout: FC<Props> = ({ children, wide }) => {
-  return <LayoutWrap>{children}</LayoutWrap>;
+  return <LayoutWrap wide={wide}>{children}</LayoutWrap>;
 };
 
 const LayoutWrap = styled.main<Props>`
   margin: 100px auto;
-  max-width: ${(p) => (p.wide ? '1200px' : '950px')};
+  max-width: ${(p) => (p.wide ? '1900px' : '960px')};
   width: 100%;
 `;
 export { Layout };

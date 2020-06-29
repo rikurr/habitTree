@@ -7,7 +7,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider as MaterialThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { theme } from './Theme';
-import './index.css'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import * as serviceWorker from './serviceWorker';
 

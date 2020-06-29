@@ -8,7 +8,7 @@ type Props = {
   onClick: any;
   bgColor?: 'isGoogle' | null;
   color?: 'primary' | 'secondary';
-  wide?: boolean | null;
+  half?: boolean | null;
 };
 
 const CustomButton: FC<Props> = (props) => {
@@ -20,7 +20,7 @@ const CustomButton: FC<Props> = (props) => {
       disabled={props.disabled}
       bgColor={props.bgColor ? props.bgColor : null}
       color={props.color}
-      wide={props.wide ? props.wide : null}
+      half={props.half ? props.half : null}
     >
       {props.label}
     </ButtonStyles>
@@ -29,7 +29,7 @@ const CustomButton: FC<Props> = (props) => {
 
 type StyledProps = {
   bgColor: 'isGoogle' | null;
-  wide?: boolean | null;
+  half?: boolean | null;
 };
 
 const getButtonStyles = ({ bgColor }: StyledProps) => {
@@ -49,7 +49,8 @@ const getButtonStyles = ({ bgColor }: StyledProps) => {
 const ButtonStyles = styled(Button)<StyledProps>`
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
   margin-top: 15px;
-  width: ${(p) => (p.wide ? '100%' : '50%')} ${getButtonStyles};
+  width: ${(p) => (p.half ? '50%' : '100%')};
+  ${getButtonStyles};
 `;
 
 export { CustomButton };

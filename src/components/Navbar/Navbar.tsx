@@ -114,7 +114,7 @@ const Navbar = () => {
               style={{ textDecoration: 'none', flexGrow: 1 }}
               variant='h5'
             >
-              Habit Tree
+              habit<span style={{ color: '#00796b' }}>Tree</span>
             </Typography>
             <IconButton onClick={toggleSlider('right', true)}>
               <MenuIcon />

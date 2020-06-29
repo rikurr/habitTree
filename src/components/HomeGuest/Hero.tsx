@@ -21,6 +21,7 @@ const Hero = () => {
             color='secondary'
             onClick={() => history.push('/signin')}
             label='サインインまたはサインアップ'
+            half={true}
           />
         </TitleWrap>
         <ImageWrap item sm={12} md={6}>

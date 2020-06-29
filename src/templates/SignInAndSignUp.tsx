@@ -14,12 +14,9 @@ type ToggleProps = {
 const SignInAndSignUp = () => {
   const [toggleForm, setToggleForm] = useState<boolean>(true);
   return (
-    <Page title='Login' wide>
-      <Typography
-        variant='h5'
-        style={{ textAlign: 'center', fontSize: '3rem' }}
-      >
-        Progress Tree
+    <Page title='signin' wide={true}>
+      <Typography style={{ textAlign: 'center' }} variant='h5'>
+        habit<span style={{ color: '#00796b' }}>Tree</span>
       </Typography>
       <FormWrap>
         <ActivityWrap>
