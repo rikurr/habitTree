@@ -1,10 +1,15 @@
 import React, { ChangeEvent, useCallback } from 'react';
 import { useImmerReducer } from 'use-immer';
 import { useHistory } from 'react-router-dom';
-import { Box } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { LiveValidateMessage, TextInput, CustomButton } from '../UIkit';
+import {
+  LiveValidateMessage,
+  TextInput,
+  CustomButton,
+  MarginTop,
+} from '../UIkit';
 import { Form, ShowPassword, ButtonWrap } from './FormStyled';
+import { signIn, signUp } from '../../redux/modules/users';
 
 type SignInState = {
   email: string;
@@ -66,21 +71,23 @@ const SignIn = () => {
 
   const handleSubmit = async () => {
     immerDispatch({ type: 'clickButton' });
-    if (state.email.trim() === '' || state.password.trim().length < 6) {
+    if (state.email.trim() === '' || state.password.trim() === '') {
       immerDispatch({
         type: 'valideteError',
-        payload: 'emailまたはpasswordが正しくありません',
+        payload: 'Eメールまたはパスワードが未入力です',
       });
       return;
     }
     try {
-      history.push('/');
+      await disaptch(signIn(state.email, state.password));
       immerDispatch({ type: 'resetValue' });
+      history.push('/');
     } catch (error) {
       immerDispatch({
         type: 'validateError',
         payload: 'ログインに失敗しました',
       });
+      alert('error');
     }
   };
 
@@ -91,8 +98,9 @@ const SignIn = () => {
         Math.floor(Math.random() * (max + 1 - min)) + min
       }`;
       const guestEmail = `${username}@test.com`;
-
+      disaptch(signUp(username, guestEmail, 'password'));
       immerDispatch({ type: 'resetValue' });
+      history.push('/');
     } catch (error) {
       immerDispatch({
         type: 'validateError',
@@ -151,7 +159,7 @@ const SignIn = () => {
         type='email'
         label='Eメール'
       />
-      <Box mt={2} />
+      <MarginTop mt={2} />
       <TextInput
         onChange={handlePasswordChange}
         value={state.password}
@@ -159,7 +167,7 @@ const SignIn = () => {
         autoComplete='off'
         label='パスワード'
       />
-      <Box mt={1} />
+      <MarginTop mt={1} />
       <ShowPassword onClick={() => handleShow(state.showPassword)}>
         {state.showMessage}
       </ShowPassword>
@@ -174,7 +182,7 @@ const SignIn = () => {
           onClick={handleGoogleSignIn}
           disabled={state.send}
           label='Googleアカウントでサインイン'
-          bgColor='isGoogle'
+          bgcolor='isGoogle'
         />
         <CustomButton
           color='secondary'

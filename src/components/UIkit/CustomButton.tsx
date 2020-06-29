@@ -6,7 +6,7 @@ type Props = {
   label: string;
   disabled?: boolean;
   onClick: any;
-  bgColor?: 'isGoogle' | null;
+  bgcolor?: 'isGoogle' | null;
   color?: 'primary' | 'secondary';
   half?: boolean | null;
 };
@@ -18,7 +18,7 @@ const CustomButton: FC<Props> = (props) => {
       variant='contained'
       onClick={() => props.onClick()}
       disabled={props.disabled}
-      bgColor={props.bgColor ? props.bgColor : null}
+      bgcolor={props.bgcolor ? props.bgcolor : null}
       color={props.color}
       half={props.half ? props.half : null}
     >
@@ -28,12 +28,12 @@ const CustomButton: FC<Props> = (props) => {
 };
 
 type StyledProps = {
-  bgColor: 'isGoogle' | null;
+  bgcolor: 'isGoogle' | null;
   half?: boolean | null;
 };
 
-const getButtonStyles = ({ bgColor }: StyledProps) => {
-  if (bgColor === 'isGoogle') {
+const getButtonStyles = ({ bgcolor }: StyledProps) => {
+  if (bgcolor === 'isGoogle') {
     return css`
       background: #4285f4;
       color: #fff;

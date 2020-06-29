@@ -17,6 +17,7 @@ import {
 import { ArrowBack, AccountCircle, Home, Search } from '@material-ui/icons';
 import SortIcon from '@material-ui/icons/Sort';
 import MenuIcon from '@material-ui/icons/Menu';
+import { auth } from '../../firebase';
 
 const useStyles = makeStyles({
   menuSliderWrap: {
@@ -85,7 +86,7 @@ const Navbar = () => {
           </ListItemIcon>
           <ListItemText primary='フィード' />
         </ListItem>
-        <ListItem onClick={() => history.push('/counter')} button>
+        <ListItem onClick={() => auth.signOut()} button>
           <ListItemIcon>
             <AccountCircle />
           </ListItemIcon>

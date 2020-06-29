@@ -1,14 +1,19 @@
 import React, { ChangeEvent, useCallback } from 'react';
 import { useImmerReducer } from 'use-immer';
-import { Box } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { LiveValidateMessage, TextInput, CustomButton } from '../UIkit';
+import {
+  LiveValidateMessage,
+  TextInput,
+  CustomButton,
+  MarginTop,
+} from '../UIkit';
 import { Form, ShowPassword, ButtonWrap } from './FormStyled';
 import {
   isValidEmailFormat,
   isValidRequiredInput,
 } from '../../utils/validates';
+import { signUp } from '../../redux/modules/users';
 
 type SignUpState = {
   username: string;
@@ -19,12 +24,6 @@ type SignUpState = {
   showPassword: boolean;
   message: string;
   showMessage: string;
-};
-
-type ValueState = {
-  username: string;
-  email: string;
-  password: string;
 };
 
 const SignUp = () => {
@@ -79,26 +78,25 @@ const SignUp = () => {
 
   const handleSubmit = async () => {
     immerDispatch({ type: 'clickButton' });
+
     if (!isValidRequiredInput(state.username, state.email, state.password)) {
       immerDispatch({
         type: 'valideteError',
-        payload: 'emailまたはpasswordが正しくありません',
+        payload: 'Eメールまたはパスワードが正しくありません',
       });
       return;
     }
     if (!isValidEmailFormat(state.email)) {
       immerDispatch({
         type: 'valideteError',
-        payload: 'emailが正しくありません',
+        payload: 'Eメールが正しくありません',
       });
       return;
     }
-
+    const { username, email, password } = state;
     try {
-      const { username } = state;
-
+      await disaptch(signUp(username, email, password));
       immerDispatch({ type: 'resetValue' });
-
       history.push('/create-active');
     } catch (error) {
       immerDispatch({
@@ -108,6 +106,7 @@ const SignUp = () => {
     }
   };
 
+  // handleChange
   const handleUsernameChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       immerDispatch({ type: 'usernameChange', payload: e.target.value });
@@ -126,6 +125,8 @@ const SignUp = () => {
     },
     [immerDispatch]
   );
+
+  // show password
 
   const handleShow = (display: boolean): void => {
     immerDispatch({ type: 'setShowPassword' });
@@ -146,9 +147,7 @@ const SignUp = () => {
     <Form>
       {' '}
       {state.validationError && (
-        <LiveValidateMessage>
-          電子メールまたはパスワードが正しくありません。
-        </LiveValidateMessage>
+        <LiveValidateMessage> {state.message}</LiveValidateMessage>
       )}
       <TextInput
         onChange={handleUsernameChange}
@@ -156,14 +155,14 @@ const SignUp = () => {
         type='text'
         label='ユーザーネーム'
       />
-      <Box mt={2} />
+      <MarginTop mt={2} />
       <TextInput
         onChange={handleEmailChange}
         value={state.email}
         type='email'
         label='Eメール'
       />
-      <Box mt={2} />
+      <MarginTop mt={2} />
       <TextInput
         onChange={handlePasswordChange}
         value={state.password}
@@ -171,13 +170,13 @@ const SignUp = () => {
         autoComplete='off'
         label='パスワード'
       />
-      <Box mt={1} />
+      <MarginTop mt={1} />
       <ShowPassword onClick={() => handleShow(state.showPassword)}>
         {state.showMessage}
       </ShowPassword>
       <ButtonWrap>
         <CustomButton
-          label='ログイン'
+          label='サインアップ'
           color='primary'
           onClick={handleSubmit}
           disabled={state.send}

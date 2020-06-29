@@ -5,7 +5,7 @@ import {
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
 
-import { userReducer } from './modules';
+import { userReducer, flashMessagesReducer } from './modules';
 import counterReducer from '../features/counter/counterSlice';
 
 const customizedMiddleware = getDefaultMiddleware({
@@ -15,6 +15,7 @@ const customizedMiddleware = getDefaultMiddleware({
 const rootReducer = () => ({
   counter: counterReducer,
   users: userReducer,
+  flashMessages: flashMessagesReducer,
 });
 
 const middleware = [...customizedMiddleware];
