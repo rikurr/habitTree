@@ -10,6 +10,7 @@ import {
 } from '../UIkit';
 import { Form, ShowPassword, ButtonWrap } from './FormStyled';
 import { signIn, signUp } from '../../redux/modules/users';
+import { signInWithGoogle } from '../../firebase';
 
 type SignInState = {
   email: string;
@@ -111,6 +112,9 @@ const SignIn = () => {
 
   const handleGoogleSignIn = async () => {
     try {
+      signInWithGoogle().then(() => {
+        history.push('/');
+      });
     } catch (error) {
       immerDispatch({
         type: 'validateError',

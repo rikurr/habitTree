@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { Page } from './Page';
 
-const LoadingIcon = () => {
+type Props = {
+  loading: boolean;
+};
+
+const LoadingWrap: FC<Props> = ({ children, loading }) => {
   return (
-    <DotsLoading>
-      <div></div>
-    </DotsLoading>
+    <>
+      {loading ? (
+        <Page title='...'>
+          <DotsLoading>
+            <div></div>
+          </DotsLoading>
+        </Page>
+      ) : (
+        <>{children}</>
+      )}
+    </>
   );
 };
 
@@ -34,7 +47,7 @@ const DotsLoading = styled.div`
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: #c4c4c4;
+    background-color: #888;
     opacity: 0;
   }
   ::before {
@@ -61,4 +74,4 @@ const DotsLoading = styled.div`
   }
 `;
 
-export { LoadingIcon };
+export { LoadingWrap };

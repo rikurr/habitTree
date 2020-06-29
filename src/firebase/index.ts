@@ -10,3 +10,7 @@ export const auth = firebase.auth();
 export const db = firebase.firestore();
 export const functions = firebase.functions();
 export const FirebaseTimestamp = firebase.firestore.Timestamp;
+
+const provider = new firebase.auth.GoogleAuthProvider();
+provider.setCustomParameters({ prompt: 'select_account' });
+export const signInWithGoogle = () => auth.signInWithPopup(provider);

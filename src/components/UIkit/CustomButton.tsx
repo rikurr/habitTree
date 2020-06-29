@@ -8,7 +8,7 @@ type Props = {
   onClick: any;
   bgcolor?: 'isGoogle' | null;
   color?: 'primary' | 'secondary';
-  half?: boolean | null;
+  half?: 'half' | null;
 };
 
 const CustomButton: FC<Props> = (props) => {
@@ -29,7 +29,7 @@ const CustomButton: FC<Props> = (props) => {
 
 type StyledProps = {
   bgcolor: 'isGoogle' | null;
-  half?: boolean | null;
+  half?: 'half' | null;
 };
 
 const getButtonStyles = ({ bgcolor }: StyledProps) => {
