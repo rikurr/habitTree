@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <FooterWrap>
       <p>
-        <Link to='/'>ホーム</Link> | <Link to='/login'>サインイン</Link>
+        <Link to='/signin'>サインイン</Link>
       </p>
       <p>
         Copyright &copy; 2020{' '}

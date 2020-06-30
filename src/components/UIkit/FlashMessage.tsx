@@ -46,7 +46,7 @@ const Alert = styled.div`
   position: absolute;
   z-index: 999;
   top: 10%;
-  right: 40%;
+  right: 10%;
   -moz-animation: ${floatingAlert} ease-in 5s forwards;
   -webkit-animation: ${floatingAlert} ease-in 5s forwards;
   -o-animation: ${floatingAlert} ease-in 5s forwards;

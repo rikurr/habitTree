@@ -12,10 +12,10 @@ const Hero = () => {
       <HeroWrap container>
         <TitleWrap item sm={12} md={6}>
           <Typography variant='h1'>
-            スキルを習得するための習慣化アプリ
+            確実に目標を達成するための習慣化アプリ
           </Typography>
           <SubTitle>
-            一つのスキル習得に焦点をあて、スキルの習得、より高度化を目指し自分のスキルの成長をゲーム感覚で確認できるアプリです。
+            一つの習慣化に焦点をあて、より高度化を目指し自分の成長を確認できるアプリです。
           </SubTitle>
           <CustomButton
             color='secondary'

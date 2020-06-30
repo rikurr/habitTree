@@ -16,7 +16,7 @@ export interface UserModel {
   uid: string;
 }
 
-export interface ActivityModel {
+export interface HabitModel {
   name: string;
   startDate: string;
   checkDate: string;
@@ -36,7 +36,7 @@ export interface LikedUser {
   createTime: ServerTimestamp;
 }
 
-export interface LikedActivity {
+export interface LikedHabit {
   id: string;
   postRef: firebase.firestore.DocumentReference;
   createTime: ServerTimestamp;

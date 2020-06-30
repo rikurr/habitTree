@@ -1,20 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk, RootState } from '../store';
 import { auth, FirebaseTimestamp, db } from '../../firebase/index';
-import { UserModel } from '../../models/model';
 import { flashMessage } from './flashMessages';
 
 const usersRef = db.collection('users');
 
 type CurrentUserProps = {
-  id: string;
+  uid: string;
   username: string;
   email: string;
   created_at: any;
   updated_at: any;
-  hasActivity: number;
-  maxActivity: number;
-  likeActivityCount: number;
+  hasHabit: number;
+  maxHabit: number;
+  likeHabitCount: number;
 };
 
 type UserState = {
@@ -27,14 +26,14 @@ const initialState: UserState = {
   isSignedIn: false,
   isFetching: true,
   currentUser: {
-    id: '',
+    uid: '',
     username: '',
     email: '',
     created_at: null,
     updated_at: null,
-    hasActivity: 0,
-    maxActivity: 1,
-    likeActivityCount: 0,
+    hasHabit: 0,
+    maxHabit: 0,
+    likeHabitCount: 0,
   },
 };
 
@@ -103,7 +102,6 @@ export const listenAuthState = (): AppThunk => async (dispatch) => {
         await createUserDocument(user);
       }
       const uid = user.uid;
-      console.log('render');
       usersRef
         .doc(uid)
         .get()
@@ -153,7 +151,6 @@ export const signUp = (
     .createUserWithEmailAndPassword(email, password)
     .then((result) => {
       const user = result.user;
-      console.log(user);
       if (user) {
         createUserDocument(user, { username }).then(() => {
           dispatch(flashMessage('アカウントを登録しました'));
@@ -167,14 +164,14 @@ export const signUp = (
 
 export const signOut = (): AppThunk => async (dispatch) => {
   const initialState = {
-    id: '',
+    uid: '',
     username: '',
     email: '',
     created_at: null,
     updated_at: null,
-    hasActivity: 0,
-    maxActivity: 1,
-    likeActivityCount: 0,
+    hasHabit: 0,
+    maxHabit: 0,
+    likeHabitCount: 0,
   };
   auth.signOut().then(() => {
     dispatch(signOutSuccess(initialState));

@@ -95,9 +95,9 @@ const SignUp = () => {
     }
     const { username, email, password } = state;
     try {
-      await disaptch(signUp(username, email, password));
+      disaptch(signUp(username, email, password));
       immerDispatch({ type: 'resetValue' });
-      history.push('/');
+      history.push('/create-habit');
     } catch (error) {
       immerDispatch({
         type: 'valideteError',

@@ -5,7 +5,7 @@ import {
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
 
-import { userReducer, flashMessagesReducer } from './modules';
+import { userReducer, flashMessagesReducer, habitReducer } from './modules';
 import counterReducer from '../features/counter/counterSlice';
 
 const customizedMiddleware = getDefaultMiddleware({
@@ -16,6 +16,7 @@ const rootReducer = () => ({
   counter: counterReducer,
   users: userReducer,
   flashMessages: flashMessagesReducer,
+  hibits: habitReducer,
 });
 
 const middleware = [...customizedMiddleware];
@@ -24,6 +25,7 @@ export const store = configureStore({
   reducer: rootReducer(),
   middleware,
 });
+
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<

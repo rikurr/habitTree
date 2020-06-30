@@ -18,7 +18,9 @@ const Feature = () => {
           </ImageWrap>
           <Box style={{ marginTop: 12, textAlign: 'center' }}>
             <Typography variant='h3'>習慣を作成</Typography>
-            <p>本当に身に付けたいスキルを一つ登録します。</p>
+            <p>
+              まずは一つだけ習慣を作成できます。複数のことを一気にするのではなく続けられるようにまずは、一つのことコツコツと始めましょう！
+            </p>
           </Box>
         </FeatureList>
         <FeatureList>
@@ -27,7 +29,7 @@ const Feature = () => {
           </ImageWrap>
           <Box style={{ marginTop: 12, textAlign: 'center' }}>
             <Typography variant='h3'>進捗状況を確認する</Typography>
-            <p>レポートを使用して日々の習慣の達成を確認できます。</p>
+            <p>レポートを使用して日々の習慣の達成を確認できます。成果は長期的に現れます。目標に向かって日々の習慣のアウトプットを確認できます。</p>
           </Box>
         </FeatureList>
         <FeatureList>
@@ -38,6 +40,8 @@ const Feature = () => {
             <Typography variant='h3'>みんなに成果を共有できる</Typography>
             <p>
               みんなの目標や達成度が見れるので、自分のモチベーションにつながります。
+              メッセージを送り合い誰かと一緒に目標に向かうこともできます。
+              習慣化するために、目標を周囲と共有しましょう。
             </p>
           </Box>
         </FeatureList>
