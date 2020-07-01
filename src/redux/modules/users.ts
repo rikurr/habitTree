@@ -14,6 +14,7 @@ type CurrentUserProps = {
   hasHabit: number;
   maxHabit: number;
   likeHabitCount: number;
+  points: number;
 };
 
 type UserState = {
@@ -34,6 +35,7 @@ const initialState: UserState = {
     hasHabit: 0,
     maxHabit: 0,
     likeHabitCount: 0,
+    points: 0,
   },
 };
 
@@ -88,7 +90,7 @@ const createUserDocument = async (user: any, addData?: any) => {
       hasHabit: 0,
       maxHabit: 1,
       likeHabitCount: 0,
-      target: '',
+      points: 0,
       ...addData,
     };
     await userRef.set(userInitialDate);
@@ -170,7 +172,7 @@ export const signOut = (): AppThunk => async (dispatch) => {
     hasHabit: 0,
     maxHabit: 0,
     likeHabitCount: 0,
-    target: '',
+    points: 0,
   };
   auth.signOut().then(() => {
     dispatch(signOutSuccess(initialState));

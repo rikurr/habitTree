@@ -10,6 +10,7 @@ import counterReducer from '../features/counter/counterSlice';
 
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
+  immutableCheck: false,
 });
 
 const rootReducer = () => ({

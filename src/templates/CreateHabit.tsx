@@ -86,12 +86,6 @@ const CreateHabit = () => {
     },
     [immerDispatch]
   );
-  const handleTargetChange = useCallback(
-    (e: ChangeEvent<{ value: string }>): void => {
-      setTarget(e.target.value);
-    },
-    []
-  );
 
   return (
     <Page title='Create Habit'>
@@ -103,7 +97,7 @@ const CreateHabit = () => {
             onChange={handleNameChange}
             value={state.name}
             type='text'
-            label='（例）よく寝る、毎朝15分瞑想、15分勉強、ストレッチ１５分、単語を5個覚える'
+            label='（例）よく寝る、毎朝15分瞑想'
           />
           <MarginTop mt={6} />
           <FormLabel component='legend'>習慣化の振り返り頻度</FormLabel>
@@ -113,9 +107,21 @@ const CreateHabit = () => {
             value={state.repeat}
             onChange={handleRepeatChange}
           >
-            <FormControlLabel value={1} control={<Radio />} label='毎日' />
-            <FormControlLabel value={3} control={<Radio />} label='３日ごと' />
-            <FormControlLabel value={7} control={<Radio />} label='１週間' />
+            <FormControlLabel
+              value={1}
+              control={<Radio />}
+              label='毎日:1ポイント'
+            />
+            <FormControlLabel
+              value={3}
+              control={<Radio />}
+              label='３日ごと:2ポイント'
+            />
+            <FormControlLabel
+              value={7}
+              control={<Radio />}
+              label='１週間:5ポイント'
+            />
           </RadioGroup>
           <DateWrap>
             <p>開始日: {state.startDate}</p>

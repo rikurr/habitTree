@@ -106,6 +106,12 @@ export const fetchMyHabits = (): AppThunk => async (dispatch, getState) => {
       const data = snapshot.data();
       habitList.push(data);
     });
+    for (let i = 0; i < habitList.length; i++) {
+      const habit = habitList[i];
+      const userQuerySnapshot = await habit.user.userRef.get();
+      habit.user.username = userQuerySnapshot.data().username;
+    }
+
     return dispatch(setMyHabits(habitList));
   } catch (error) {
     console.log('error');
