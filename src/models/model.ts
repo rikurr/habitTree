@@ -14,6 +14,7 @@ export interface UserModel {
   maxHabit: number;
   likeHabitCount: IncrementableNumber;
   uid: string;
+  target: string;
 }
 
 export interface HabitModel {

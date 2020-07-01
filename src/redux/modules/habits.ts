@@ -8,7 +8,6 @@ import {
   FirebaseFieldValue,
   createRef,
 } from '../../firebase/index';
-import { flashMessage } from './flashMessages';
 
 type HabitProps = {
   id: string;
@@ -28,14 +27,14 @@ type HabitProps = {
 
 type HabitState = {
   myHabit: HabitProps[];
-  activities: HabitProps[];
+  habits: HabitProps[];
   isFetching: boolean;
   showHabit: HabitProps;
 };
 
 const initialState: HabitState = {
   myHabit: [],
-  activities: [],
+  habits: [],
   isFetching: true,
   showHabit: {
     id: '',
@@ -58,11 +57,12 @@ export const habitsSlice = createSlice({
   name: 'Habit',
   initialState,
   reducers: {
-    setMyActive: (state, action: PayloadAction<any>) => {
+    setMyHabits: (state, action: PayloadAction<any>) => {
+      state.isFetching = false;
       state.myHabit = action.payload;
     },
     setActivities: (state, action: PayloadAction<any>) => {
-      state.activities = action.payload;
+      state.habits = action.payload;
       state.isFetching = false;
     },
     isFetchingStart: (state) => {
@@ -87,40 +87,44 @@ export const habitsSlice = createSlice({
 });
 
 export const {
-  setMyActive,
+  setMyHabits,
   setActivities,
   isFetchingFailure,
   setShowHabit,
   isFetchingStart,
 } = habitsSlice.actions;
 
-//  自分のアクティビティを取得
-// export const fetchMyActive = (uid: string | undefined): AppThunk => (
-//   dispatch
-// ) => {
-//   if (!uid) return;
-//   const fetch = async () => {
-//     try {
-//       const data = await getMyHabit(uid);
-//       console.log(data);
-//       dispatch(setMyActive(data));
-//     } catch (error) {
-//       console.log('error fetch my active');
-//     }
-//   };
-//   fetch();
-// };
+export const fetchMyHabits = (): AppThunk => async (dispatch, getState) => {
+  dispatch(isFetchingStart());
+  const state = getState();
+  const uid = state.users.currentUser.uid;
+  try {
+    const snapshots = await createRef('users', uid).collection('habits').get();
+    if (snapshots.docs.length === 0) return dispatch(isFetchingFailure());
+    const habitList: any = [];
+    snapshots.forEach((snapshot) => {
+      const data = snapshot.data();
+      habitList.push(data);
+    });
+    return dispatch(setMyHabits(habitList));
+  } catch (error) {
+    console.log('error');
+  }
+};
 
-export const createHabit = async(data: CreateHabitProps) => {
+export const createHabit = async (data: CreateHabitProps, target?: string) => {
   const batch = db.batch();
-  const { uid } = data;
+  const { uid, name, checkDate, startDate, repeat } = data;
   const userRef = createRef('users', uid);
   const ref = userRef.collection('habits').doc();
   const id = ref.id;
   const habitsRef = userRef.collection('habits').doc(id);
   try {
     batch.set(habitsRef, {
-      ...data,
+      name,
+      checkDate,
+      startDate,
+      repeat,
       id,
       created_at: FirebaseTimestamp.now(),
       progressCount: 0,
@@ -131,9 +135,18 @@ export const createHabit = async(data: CreateHabitProps) => {
         userRef: userRef,
       },
     });
-    batch.update(userRef, { hasHabit: FirebaseFieldValue.increment(1) });
+    if (target) {
+      batch.update(userRef, {
+        hasHabit: FirebaseFieldValue.increment(1),
+        target: target,
+      });
+    } else {
+      batch.update(userRef, {
+        hasHabit: FirebaseFieldValue.increment(1),
+      });
+    }
     return await batch.commit().then(() => {
-      return '成功'
+      return '成功';
     });
   } catch (error) {
     throw new Error(error);

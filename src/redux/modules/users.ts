@@ -88,6 +88,7 @@ const createUserDocument = async (user: any, addData?: any) => {
       hasHabit: 0,
       maxHabit: 1,
       likeHabitCount: 0,
+      target: '',
       ...addData,
     };
     await userRef.set(userInitialDate);
@@ -102,13 +103,10 @@ export const listenAuthState = (): AppThunk => async (dispatch) => {
         await createUserDocument(user);
       }
       const uid = user.uid;
-      usersRef
-        .doc(uid)
-        .get()
-        .then((snapshot) => {
-          const data = snapshot.data() as CurrentUserProps;
-          dispatch(signInSuccess(data));
-        });
+      usersRef.doc(uid).onSnapshot((doc) => {
+        const data = doc.data() as CurrentUserProps;
+        dispatch(signInSuccess(data));
+      });
     } else {
       dispatch(signInFailure());
     }
@@ -172,6 +170,7 @@ export const signOut = (): AppThunk => async (dispatch) => {
     hasHabit: 0,
     maxHabit: 0,
     likeHabitCount: 0,
+    target: '',
   };
   auth.signOut().then(() => {
     dispatch(signOutSuccess(initialState));

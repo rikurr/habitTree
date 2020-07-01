@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useCallback } from 'react';
+import React, { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Button,
@@ -31,7 +31,8 @@ export type CreateHabitProps = {
 const CreateHabit = () => {
   const user = useSelector(selectUser);
   const history = useHistory();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const [target, setTarget] = useState('');
 
   const initialState: CreateHabitProps = {
     name: '',
@@ -61,14 +62,12 @@ const CreateHabit = () => {
       return;
     }
 
-    createHabit(state).then((res) => {
+    createHabit(state, target).then((res) => {
       if (res === '成功') {
         history.push('/');
-        dispatch(flashMessage(`${state.name}を作成しました`))
+        dispatch(flashMessage(`${state.name}を作成しました`));
       }
     });
-
-    // dispatch(flashMessage(`${state.name}を作成しました`));
   };
 
   const handleRepeatChange = useCallback(
@@ -82,25 +81,32 @@ const CreateHabit = () => {
   );
 
   const handleNameChange = useCallback(
-    (e: ChangeEvent<{ value: unknown }>): void => {
+    (e: ChangeEvent<{ value: string }>): void => {
       immerDispatch({ type: 'habitChange', payload: e.target.value });
     },
     [immerDispatch]
+  );
+  const handleTargetChange = useCallback(
+    (e: ChangeEvent<{ value: string }>): void => {
+      setTarget(e.target.value);
+    },
+    []
   );
 
   return (
     <Page title='Create Habit'>
       <Box p={6}>
         <HabitForm onSubmit={handleSubmit}>
-          <h1>まずは新しい習慣や目標を決める</h1>
+          <MarginTop mt={6} />
+          <Label>目標を達成するために新しい習慣や小さな目標を決める</Label>
           <TextInput
             onChange={handleNameChange}
             value={state.name}
             type='text'
-            label='（例）本を読む、瞑想、勉強'
+            label='（例）よく寝る、毎朝15分瞑想、15分勉強、ストレッチ１５分、単語を5個覚える'
           />
           <MarginTop mt={6} />
-          <FormLabel component='legend'>振り返り頻度</FormLabel>
+          <FormLabel component='legend'>習慣化の振り返り頻度</FormLabel>
           <RadioGroup
             aria-label='アウトプット'
             name='アウトプット'
@@ -147,6 +153,11 @@ const DateWrap = styled.div`
   color: ${(p) => p.theme.palette.secondary.main};
   font-weight: bold;
   font-size: 1rem;
+`;
+
+const Label = styled.h3`
+  font-size: 1.4rem;
+  margin: 0;
 `;
 
 export { CreateHabit };
