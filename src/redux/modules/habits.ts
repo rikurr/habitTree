@@ -73,11 +73,11 @@ export const habitsSlice = createSlice({
     isFetchingFailure: (state) => {
       state.isFetching = false;
     },
-    sethabitDetail: (state, action: PayloadAction<any>) => {
+    setHabitDetail: (state, action: PayloadAction<HabitProps>) => {
       state.habitDetail = action.payload;
       state.isFetching = false;
       // 最新のレポート順
-      state.habitDetail.reports = state.habitDetail?.reports.sort(
+      state.habitDetail.reports = state.habitDetail.reports.sort(
         (a: any, b: any) => {
           if (a.created_at.seconds > b.created_at.seconds) return -1;
           if (a.created_at.seconds < b.created_at.seconds) return 1;
@@ -92,7 +92,7 @@ export const {
   setMyHabits,
   setActivities,
   isFetchingFailure,
-  sethabitDetail,
+  setHabitDetail,
   isFetchingStart,
 } = habitsSlice.actions;
 
@@ -113,10 +113,9 @@ export const fetchMyHabits = (): AppThunk => async (dispatch, getState) => {
       const userQuerySnapshot = await habit.user.userRef.get();
       habit.user.username = userQuerySnapshot.data().username;
     }
-
     return dispatch(setMyHabits(habitList));
   } catch (error) {
-    console.log('error');
+    throw new Error(error);
   }
 };
 
@@ -176,24 +175,25 @@ export const createHabit = async (data: CreateHabitProps, target?: string) => {
 //   fetch();
 // };
 
-// export const fetchhabitDetail = (
-//   usrId: string,
-//   progressId: string
-// ): AppThunk => (dispatch) => {
-//   if (!usrId) return;
-//   dispatch(isFetchingStart());
-//   const fetch = async () => {
-//     try {
-//       const data = await getProgress(usrId, progressId);
-//       console.log(data);
-//       dispatch(sethabitDetail(data));
-//     } catch (error) {
-//       console.log('error fetch my active');
-//       dispatch(isFetchingFailure());
-//     }
-//   };
-//   fetch();
-// };
+export const fetchhabitDetail = (
+  userId: string,
+  habitId: string
+): AppThunk => async (dispatch) => {
+  if (!userId) return;
+  dispatch(isFetchingStart());
+  const habitRef = createRef('users', userId).collection('habits').doc(habitId);
+  try {
+    const snapshot = await habitRef.get();
+    console.log(snapshot.data());
+    const data = snapshot.data() as any;
+    const userQuerySnapshot = await data.user.userRef.get();
+    data.user.username = userQuerySnapshot.data().username;
+    dispatch(setHabitDetail(data));
+  } catch (error) {
+    dispatch(isFetchingFailure());
+    throw new Error(error);
+  }
+};
 
 export const selectHabit = (state: RootState) => state.hibits;
 

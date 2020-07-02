@@ -21,7 +21,7 @@ import { AccessTime } from '@material-ui/icons';
 import RepeatIcon from '@material-ui/icons/Repeat';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { selectUser } from '../redux/modules/users';
-import { selectHabit } from '../redux/modules/habits';
+import { selectHabit, fetchhabitDetail } from '../redux/modules/habits';
 import { getDate } from '../utils/dateFormat';
 import { ProgressCounter } from '../components/HabitDetail';
 import styled from 'styled-components';
@@ -35,7 +35,9 @@ const HabitDetail = () => {
 
   const today = getDate(0);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(fetchhabitDetail(userId, habitId));
+  }, []);
 
   const listItems = [
     {
@@ -74,9 +76,9 @@ const HabitDetail = () => {
   ];
 
   return (
-    <Page title='progress'>
+    <Page title='Habit'>
       <Typography style={{ textAlign: 'center' }} variant='h2'>
-        {habits.habitDetail.name}
+        {habits.habitDetail.user.username}
       </Typography>
       <Grid container style={{ marginTop: 24 }}>
         <Grid item xs={12} sm={12}>
