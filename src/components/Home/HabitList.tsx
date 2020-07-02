@@ -3,7 +3,7 @@ import { Typography, Grid } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { selectHabit } from '../../redux/modules/habits';
 import { selectUser } from '../../redux/modules/users';
-import { MarginTop, CustomButton, ProgressChart } from '../UIkit';
+import { MarginTop, ProgressChart } from '../UIkit';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
@@ -17,6 +17,7 @@ const HabitList = () => {
       <Typography variant='h2'>Total Points</Typography>
       <MarginTop mt={4} />
       <ProgressChart
+        title='Level'
         message='まずは21回達成しよう'
         from={12}
         to={21}
@@ -27,9 +28,9 @@ const HabitList = () => {
       <MarginTop mt={4} />
       <Grid container spacing={1}>
         {habits.myHabit.map((habit) => (
-          <Grid item xs={12} sm={6}>
+          <Grid key={habit.id} item xs={12} sm={6}>
             <HabitWrap>
-              <CustomLink to={`users/${habit.user.uid}/habit/${habit.id}`}>
+              <CustomLink to={`user/${habit.user.uid}/habit/${habit.id}`}>
                 <HabitContent>
                   <CustomAvatar>{habit.successfulCount}</CustomAvatar>
                   <div>

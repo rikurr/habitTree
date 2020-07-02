@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import MobilRightMenuSlider from '@material-ui/core/Drawer';
 import {
   Box,
@@ -14,7 +14,13 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import { ArrowBack, AccountCircle, Home, Search, AddCircle } from '@material-ui/icons';
+import {
+  ArrowBack,
+  AccountCircle,
+  Home,
+  Search,
+  AddCircle,
+} from '@material-ui/icons';
 import SortIcon from '@material-ui/icons/Sort';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useSelector, useDispatch } from 'react-redux';
@@ -42,15 +48,21 @@ type NavbarState = {
 const Navbar = () => {
   const user = useSelector(selectUser);
   const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
-  const {hasHabit, maxHabit} = user.currentUser
+  const { hasHabit, maxHabit } = user.currentUser;
+  const [path, setPath] = useState<string>('');
   const [state, setState] = useState<NavbarState>({
     right: false,
   });
 
+  useEffect(() => {
+    setPath(() => location.pathname);
+  }, [location]);
+
   const toggleAuth = (login: boolean): any => {
     if (login) {
-      dispatch(signOut())
+      dispatch(signOut());
       history.push('/homeguest');
     } else {
       history.push('/signin');
@@ -103,9 +115,7 @@ const Navbar = () => {
             <ListItemIcon>
               <AddCircle />
             </ListItemIcon>
-            <ListItemText
-              primary='習慣を作成'
-            />
+            <ListItemText primary='習慣を作成' />
           </ListItem>
         )}
       </List>
@@ -122,9 +132,11 @@ const Navbar = () => {
           position='fixed'
         >
           <Toolbar className={classes.navInner}>
-            <IconButton onClick={() => history.goBack()}>
-              <ArrowBack />
-            </IconButton>
+            {path.replace('/', '') && path !== 'create-habit' ? (
+              <IconButton onClick={() => history.goBack()}>
+                <ArrowBack />
+              </IconButton>
+            ) : null}
             <Typography
               to='/'
               component={Link}

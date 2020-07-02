@@ -102,7 +102,7 @@ const SignIn = () => {
       const guestEmail = `${guestName}@test.com`;
       await disaptch(signUp(guestName, guestEmail, 'password'));
       immerDispatch({ type: 'resetValue' })
-      history.push('/create-habit');
+      history.push('/');
     } catch (error) {
       immerDispatch({
         type: 'validateError',
@@ -114,7 +114,7 @@ const SignIn = () => {
   const handleGoogleSignIn = async () => {
     try {
       signInWithGoogle().then(async () => {
-        history.push('/create-habit');
+        history.push('/');
         disaptch(flashMessage('Google認証でサインインしました'));
       });
     } catch (error) {

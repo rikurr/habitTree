@@ -97,7 +97,7 @@ const SignUp = () => {
     try {
       disaptch(signUp(username, email, password));
       immerDispatch({ type: 'resetValue' });
-      history.push('/create-habit');
+      history.push('/');
     } catch (error) {
       immerDispatch({
         type: 'valideteError',

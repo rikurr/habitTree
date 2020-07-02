@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { Counter } from './features/counter/Counter';
 import {
   Home,
   HomeGuest,
   SignInAndSignUp,
   NotFuond,
   CreateHabit,
+  HabitDetail,
 } from './templates';
 import Auth from './Auth';
 import { useSelector } from 'react-redux';
@@ -18,11 +18,11 @@ const Router = () => {
   const { hasHabit, maxHabit } = user.currentUser;
   return (
     <Switch>
-      <Route exact path='/counter' component={Counter} />
       <Route exact path='/homeguest' component={HomeGuest} />
       <Route exact path='/signin' component={SignInAndSignUp} />
       <Auth>
         <Route exact path='/' component={Home} />
+        <Route exact path='/user/:userId/habit/:habitId' component={HabitDetail} />
         {hasHabit < maxHabit && (
           <>
             <Route exact path='/create-habit' component={CreateHabit} />

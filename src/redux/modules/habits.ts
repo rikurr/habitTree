@@ -21,6 +21,7 @@ type HabitProps = {
   user: {
     uid: string;
     userRef: any;
+    username: string;
   };
   reports: any[];
 };
@@ -29,14 +30,14 @@ type HabitState = {
   myHabit: HabitProps[];
   habits: HabitProps[];
   isFetching: boolean;
-  showHabit: HabitProps;
+  habitDetail: HabitProps;
 };
 
 const initialState: HabitState = {
   myHabit: [],
   habits: [],
   isFetching: true,
-  showHabit: {
+  habitDetail: {
     id: '',
     name: '',
     startDate: '',
@@ -48,6 +49,7 @@ const initialState: HabitState = {
     user: {
       uid: '',
       userRef: null,
+      username: '',
     },
     reports: [],
   },
@@ -71,11 +73,11 @@ export const habitsSlice = createSlice({
     isFetchingFailure: (state) => {
       state.isFetching = false;
     },
-    setShowHabit: (state, action: PayloadAction<any>) => {
-      state.showHabit = action.payload;
+    sethabitDetail: (state, action: PayloadAction<any>) => {
+      state.habitDetail = action.payload;
       state.isFetching = false;
       // 最新のレポート順
-      state.showHabit.reports = state.showHabit?.reports.sort(
+      state.habitDetail.reports = state.habitDetail?.reports.sort(
         (a: any, b: any) => {
           if (a.created_at.seconds > b.created_at.seconds) return -1;
           if (a.created_at.seconds < b.created_at.seconds) return 1;
@@ -90,7 +92,7 @@ export const {
   setMyHabits,
   setActivities,
   isFetchingFailure,
-  setShowHabit,
+  sethabitDetail,
   isFetchingStart,
 } = habitsSlice.actions;
 
@@ -174,7 +176,7 @@ export const createHabit = async (data: CreateHabitProps, target?: string) => {
 //   fetch();
 // };
 
-// export const fetchShowHabit = (
+// export const fetchhabitDetail = (
 //   usrId: string,
 //   progressId: string
 // ): AppThunk => (dispatch) => {
@@ -184,7 +186,7 @@ export const createHabit = async (data: CreateHabitProps, target?: string) => {
 //     try {
 //       const data = await getProgress(usrId, progressId);
 //       console.log(data);
-//       dispatch(setShowHabit(data));
+//       dispatch(sethabitDetail(data));
 //     } catch (error) {
 //       console.log('error fetch my active');
 //       dispatch(isFetchingFailure());

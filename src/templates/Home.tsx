@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router';
 import { Page, LoadingIcon } from '../components/UIkit';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from '../redux/modules/users';
@@ -13,7 +12,6 @@ const Home = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const { hasHabit, maxHabit } = user.currentUser;
-  console.log(habits.myHabit);
   useEffect(() => {
     if (hasHabit > 0) {
       dispatch(fetchMyHabits());

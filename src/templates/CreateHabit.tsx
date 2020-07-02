@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Button,
@@ -32,7 +32,6 @@ const CreateHabit = () => {
   const user = useSelector(selectUser);
   const history = useHistory();
   const dispatch = useDispatch();
-  const [target, setTarget] = useState('');
 
   const initialState: CreateHabitProps = {
     name: '',
@@ -62,7 +61,7 @@ const CreateHabit = () => {
       return;
     }
 
-    createHabit(state, target).then((res) => {
+    createHabit(state).then((res) => {
       if (res === '成功') {
         history.push('/');
         dispatch(flashMessage(`${state.name}を作成しました`));

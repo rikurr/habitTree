@@ -13,6 +13,7 @@ type Props = {
   from: number;
   message: string;
   progress: boolean;
+  title: 'Level' | 'Progress'
 };
 
 const ProgressChart = (props: Props) => {
@@ -24,7 +25,7 @@ const ProgressChart = (props: Props) => {
   return (
     <ChartWrap>
       <MarginTop mt={4} />
-      <Typography variant='h3'>level</Typography>
+      <Typography variant='h3'>{props.title}</Typography>
       <MarginTop mt={4} />
       <CircleContainer percent={percent} deg={deg}>
         <div className='ppc-progress'>
