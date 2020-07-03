@@ -1,39 +1,57 @@
 import React from 'react';
 import { Typography, Grid } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectHabit } from '../../redux/modules/habits';
-import { selectUser } from '../../redux/modules/users';
-import { MarginTop, ProgressChart, SecondaryText } from '../UIkit';
+import { selectUser, levelUp } from '../../redux/modules/users';
+import {
+  MarginTop,
+  ProgressChart,
+  SecondaryText,
+  CustomButton,
+} from '../UIkit';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import { getExperience, getHabitMessage } from '../../utils/';
 
 const HabitList = () => {
-  const habits = useSelector(selectHabit);
-  const user = useSelector(selectUser);
+  const { myHabit } = useSelector(selectHabit);
+  const { currentUser } = useSelector(selectUser);
+  const dispatch = useDispatch();
 
-  console.log(habits.myHabit.length);
   return (
     <>
-      <Typography variant='h2'>Hello,{user.currentUser.username}</Typography>
+      <Typography variant='h2'>Hello,{currentUser.username}</Typography>
       <MarginTop mt={1} />
-      <p style={{ fontSize: 18 }}>Level {user.currentUser.level}</p>
+      <LevelText>
+        Level <SecondaryText>{currentUser.level}</SecondaryText>
+      </LevelText>
       <MarginTop mt={4} />
       <ProgressChart
-        title='Total Points'
-        message='まずは21日達成を目標にしよう!'
-        from={12}
-        to={21}
+        title='Next Level'
+        message={getHabitMessage(currentUser.level)}
+        from={currentUser.points}
+        to={getExperience(currentUser.level)}
         progress={false}
       />
+      {currentUser.points >= getExperience(currentUser.level) && (
+        <>
+          <MarginTop mt={2} />
+          <CustomButton
+            onClick={() => dispatch(levelUp())}
+            label='レベルアップする'
+            color='secondary'
+          />
+        </>
+      )}
       <MarginTop mt={4} />
       <Typography variant='h2'>
-        MY Habits <SecondaryText>{habits.myHabit.length}</SecondaryText>
+        MY Habits <SecondaryText>{myHabit.length}</SecondaryText>
       </Typography>
       <MarginTop mt={4} />
       <Grid container spacing={1}>
-        {habits.myHabit.map((habit) => (
+        {myHabit.map((habit) => (
           <Grid key={habit.id} item xs={12} sm={6}>
             <HabitWrap>
               <CustomLink to={`user/${habit.user.uid}/habit/${habit.id}`}>
@@ -65,6 +83,7 @@ const HabitList = () => {
 };
 
 export const HabitWrap = styled.div`
+  cursor: pointer;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 12px;
@@ -82,9 +101,11 @@ export const CustomLink = styled(Link)`
 `;
 
 export const CustomAvatar = styled(Avatar)`
-  color: #333;
-  background: ${(p) => p.theme.palette.secondary.contrastText};
-  margin: 0 12px;
+  color: #fff;
+  background: ${(p) => p.theme.palette.secondary.light};
+  margin: 0 16px;
+  width: 60px;
+  height: 60px;
 `;
 
 export const CustomIcon = styled(FavoriteIcon)`
@@ -99,8 +120,8 @@ export const Title = styled.p`
 
 export const SubTitle = styled.p`
   font-size: 1rem;
-  color: #fff;
   margin: 0;
+  color: #fefefe;
 `;
 
 export const HabitFotter = styled.div`
@@ -114,6 +135,10 @@ export const SuccessfulText = styled.span`
   font-weight: bold;
 `;
 
-
+const LevelText = styled.p`
+  font-weight: bold;
+  color: #aaa;
+  font-size: 1.4rem;
+`;
 
 export { HabitList };

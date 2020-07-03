@@ -6,10 +6,15 @@ service cloud.firestore {
       allow create;
       allow update: if request.auth.uid == userId;
       allow delete: if request.auth.uid == userId;
+
       match /habits/{habitId}{
           allow read: if true;
           allow write: if isAuthenticated();
         }
+    }
+
+    match /{path=**}/habits/{habitId} {
+      allow read: if true;
     }
 
      function isAuthenticated() {

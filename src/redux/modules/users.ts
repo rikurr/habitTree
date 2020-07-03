@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk, RootState } from '../store';
-import { auth, FirebaseTimestamp, db } from '../../firebase/index';
+import {
+  auth,
+  FirebaseTimestamp,
+  db,
+  createRef,
+  FirebaseFieldValue,
+} from '../../firebase/index';
 import { flashMessage } from './flashMessages';
 
 const usersRef = db.collection('users');
@@ -177,6 +183,27 @@ export const signOut = (): AppThunk => async (dispatch) => {
   auth.signOut().then(() => {
     dispatch(signOutSuccess(initialState));
   });
+};
+
+export const levelUp = (): AppThunk => async (dispatch, getState) => {
+  const { users } = getState();
+  const userRef = createRef('users', users.currentUser.uid);
+  try {
+    userRef
+      .set(
+        {
+          level: FirebaseFieldValue.increment(1),
+        },
+        { merge: true }
+      )
+      .then(() => {
+        dispatch(
+          flashMessage(`レベルが上がりました!Habitをメニューから作成できます。`)
+        );
+      });
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export const selectUser = (state: RootState) => state.users;

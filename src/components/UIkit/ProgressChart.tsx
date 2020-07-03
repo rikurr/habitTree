@@ -13,7 +13,7 @@ type Props = {
   from: number;
   message: string;
   progress: boolean;
-  title: 'Total Points' | 'Progress';
+  title: 'Next Level' | 'Progress';
 };
 
 const ProgressChart = (props: Props) => {
@@ -44,6 +44,7 @@ const ProgressChart = (props: Props) => {
           </div>
         </div>
       </CircleContainer>
+      <MarginTop mt={2} />
       <ChartName>{props.message}</ChartName>
     </ChartWrap>
   );
@@ -183,11 +184,13 @@ const CircleContainer = styled.div<prop>`
 `;
 
 const ChartName = styled.p`
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   font-weight: bold;
+  width: 94%;
+  margin: 0 auto;
+  text-align: center;
   @media (max-width: 600px) {
     font-size: 0.8rem;
-    font-weight: bold;
   }
 `;
 

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectUser } from './redux/modules/users';
 
+import Auth from './Auth';
 import {
   Home,
   HomeGuest,
@@ -8,10 +11,8 @@ import {
   NotFuond,
   CreateHabit,
   HabitDetail,
+  Feed,
 } from './templates';
-import Auth from './Auth';
-import { useSelector } from 'react-redux';
-import { selectUser } from './redux/modules/users';
 
 const Router = () => {
   const user = useSelector(selectUser);
@@ -27,6 +28,7 @@ const Router = () => {
           path='/user/:userId/habit/:habitId'
           component={HabitDetail}
         />
+        <Route exact path='/feed' component={Feed} />
         {hasHabit < level && (
           <>
             <Route exact path='/create-habit' component={CreateHabit} />

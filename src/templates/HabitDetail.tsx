@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import {
   Page,
   CustomButton,
@@ -20,7 +20,11 @@ import { AccessTime } from '@material-ui/icons';
 import RepeatIcon from '@material-ui/icons/Repeat';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { selectUser } from '../redux/modules/users';
-import { selectHabit, fetchhabitDetail } from '../redux/modules/habits';
+import {
+  selectHabit,
+  fetchhabitDetail,
+  deleteHabit,
+} from '../redux/modules/habits';
 import { getDate } from '../utils/dateFormat';
 import {
   ProgressCounter,
@@ -29,12 +33,14 @@ import {
 } from '../components/HabitDetail';
 import styled from 'styled-components';
 import { NotFuond } from './NotFuond';
+import { flashMessage } from '../redux/modules/flashMessages';
 
 const HabitDetail = () => {
   const { userId, habitId } = useParams();
-  const user = useSelector(selectUser);
-  const habits = useSelector(selectHabit);
+  const { currentUser } = useSelector(selectUser);
+  const { habitDetail, isFetching } = useSelector(selectHabit);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const today = getDate(0);
 
@@ -42,15 +48,20 @@ const HabitDetail = () => {
     dispatch(fetchhabitDetail(userId, habitId));
   }, [userId, habitId, dispatch]);
 
+  const handleDelete = async (userId: string, habitId: string) => {
+    deleteHabit(userId, habitId).then(() => {
+      dispatch(flashMessage('Habitを削除しました'));
+      history.push('/');
+    });
+  };
+
   const listItems = [
     {
       icon: <AccessTime color='primary' />,
       text: (
         <>
           開始日:
-          <span style={{ color: '#009688' }}>
-            {habits.habitDetail.startDate}
-          </span>
+          <span style={{ color: '#009688' }}>{habitDetail.startDate}</span>
         </>
       ),
     },
@@ -59,9 +70,7 @@ const HabitDetail = () => {
       text: (
         <>
           チェック日:
-          <span style={{ color: '#009688' }}>
-            {habits.habitDetail.checkDate}
-          </span>
+          <span style={{ color: '#009688' }}>{habitDetail.checkDate}</span>
         </>
       ),
     },
@@ -70,25 +79,23 @@ const HabitDetail = () => {
       text: (
         <>
           確認:
-          <span style={{ color: '#009688' }}>
-            {habits.habitDetail.repeat}日ごと
-          </span>
+          <span style={{ color: '#009688' }}>{habitDetail.repeat}日ごと</span>
         </>
       ),
     },
   ];
 
-  if (!habits.habitDetail.id && !habits.isFetching) {
+  if (!habitDetail.id && !isFetching) {
     return <NotFuond />;
   }
-  if (habits.isFetching) {
+  if (isFetching) {
     return <LoadingIcon />;
   }
 
-  if (habits.habitDetail.checkDate) {
+  if (habitDetail.checkDate) {
     if (
-      today >= habits.habitDetail.checkDate &&
-      user.currentUser.uid === habits.habitDetail.user.uid
+      today >= habitDetail.checkDate &&
+      currentUser.uid === habitDetail.user.uid
     ) {
       return <CreateReview />;
     }
@@ -96,20 +103,18 @@ const HabitDetail = () => {
 
   return (
     <Page title='Habit'>
-      <Typography style={{ textAlign: 'center' }} variant='h1'>
-        {habits.habitDetail.user.username}
-      </Typography>
+      <Typography variant='h1'>{habitDetail.user.username}</Typography>
       <MarginTop mt={2} />
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12}>
-          <Typography variant='h3'>{habits.habitDetail.name}</Typography>
+          <Typography variant='h3'>{habitDetail.name}</Typography>
           <ProgressCounter />
         </Grid>
         <Grid item xs={12} sm={12}>
           <ProgressChart
             title='Progress'
-            from={habits.habitDetail.successfulCount}
-            to={habits.habitDetail.progressCount}
+            from={habitDetail.successfulCount}
+            to={habitDetail.progressCount}
             message='達成率'
             progress={true}
           />
@@ -126,14 +131,16 @@ const HabitDetail = () => {
           </List>
         ))}
       </HabitInfo>
-      {habits.habitDetail.reviews.length > 0 ? <Review /> : null}
+      {habitDetail.reviews.length > 0 ? <Review /> : null}
       <MarginTop mt={2} />
-      <CustomButton
-        label='削除する'
-        color='primary'
-        onClick={() => console.log('削除')}
-        half='half'
-      />
+      {currentUser.uid === habitDetail.user.uid && (
+        <CustomButton
+          label='削除する'
+          color='primary'
+          onClick={() => handleDelete(currentUser.uid, habitId)}
+          half='half'
+        />
+      )}
     </Page>
   );
 };

@@ -4,3 +4,4 @@ export * from './SignInAndSignUp';
 export * from './NotFuond';
 export * from './CreateHabit';
 export * from './HabitDetail'
+export * from './Feed';

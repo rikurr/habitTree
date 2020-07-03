@@ -23,6 +23,7 @@ type HabitProps = {
     uid: string;
     userRef: any;
     username: string;
+    level: number;
   };
   reviews: any[];
 };
@@ -51,9 +52,15 @@ const initialState: HabitState = {
       uid: '',
       userRef: null,
       username: '',
+      level: 0,
     },
     reviews: [],
   },
+};
+
+type State = {
+  habitList: HabitProps[];
+  uid: string;
 };
 
 export const habitsSlice = createSlice({
@@ -64,9 +71,11 @@ export const habitsSlice = createSlice({
       state.isFetching = false;
       state.myHabit = action.payload;
     },
-    setActivities: (state, action: PayloadAction<any>) => {
-      state.habits = action.payload;
+    setHabits: (state, action: PayloadAction<State>) => {
       state.isFetching = false;
+      state.habits = action.payload.habitList.filter(
+        (item) => item.user.uid !== action.payload.uid
+      );
     },
     isFetchingStart: (state) => {
       state.isFetching = true;
@@ -91,7 +100,7 @@ export const habitsSlice = createSlice({
 
 export const {
   setMyHabits,
-  setActivities,
+  setHabits,
   isFetchingFailure,
   setHabitDetail,
   isFetchingStart,
@@ -115,6 +124,30 @@ export const fetchMyHabits = (): AppThunk => async (dispatch, getState) => {
       habit.user.username = userQuerySnapshot.data().username;
     }
     return dispatch(setMyHabits(habitList));
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const fetchHabits = (): AppThunk => async (dispatch, getState) => {
+  dispatch(isFetchingStart());
+  const { users } = getState();
+  const { uid } = users.currentUser;
+  try {
+    const snapshots = await db.collectionGroup('habits').limit(20).get();
+    if (snapshots.docs.length === 0) return dispatch(isFetchingFailure());
+    const habitList: any = [];
+    snapshots.forEach((snapshot) => {
+      const data = snapshot.data();
+      habitList.push(data);
+    });
+    for (let i = 0; i < habitList.length; i++) {
+      const habit = habitList[i];
+      const userQuerySnapshot = await habit.user.userRef.get();
+      habit.user.username = userQuerySnapshot.data().username;
+      habit.user.level = userQuerySnapshot.data().level;
+    }
+    return dispatch(setHabits({ habitList, uid }));
   } catch (error) {
     throw new Error(error);
   }
@@ -153,21 +186,6 @@ export const createHabit = async (data: CreateHabitProps, target?: string) => {
     throw new Error(error);
   }
 };
-
-// export const fetchActivities = (uid: string): AppThunk => (dispatch) => {
-//   const fetch = async () => {
-//     try {
-//       const data = await getActivities(uid);
-//       if (!data) return dispatch(isFetchingFailure());
-//       console.log(data);
-//       dispatch(setActivities(data));
-//     } catch (error) {
-//       console.log('error');
-//       dispatch(isFetchingFailure());
-//     }
-//   };
-//   fetch();
-// };
 
 export const fetchhabitDetail = (
   userId: string,
@@ -234,13 +252,31 @@ export const createReview = async (
       { merge: true }
     );
     batch.update(userRef, {
-      points: points(repeat),
+      points: FirebaseFieldValue.increment(points(repeat)),
     });
     return await batch.commit().then(() => {
       return '成功';
     });
   } catch (error) {
     throw new Error(error);
+  }
+};
+
+export const deleteHabit = async (userId: string, habitId: string) => {
+  const confirm = window.confirm('Habitを削除しますか？');
+  if (confirm) {
+    const batch = db.batch();
+    const userRef = createRef('users', userId);
+    const habitRef = userRef.collection('habits').doc(habitId);
+    try {
+      batch.delete(habitRef);
+      batch.update(userRef, {
+        hasHabit: FirebaseFieldValue.increment(-1),
+      });
+      return await batch.commit();
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 };
 

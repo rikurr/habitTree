@@ -7,6 +7,7 @@ import {
   FormLabel,
   RadioGroup,
   Radio,
+  Typography,
 } from '@material-ui/core';
 import styled from 'styled-components';
 import { useImmerReducer } from 'use-immer';
@@ -91,7 +92,8 @@ const CreateHabit = () => {
       <Box p={6}>
         <HabitForm onSubmit={handleSubmit}>
           <MarginTop mt={6} />
-          <Label>目標を達成するために新しい習慣や小さな目標を決める</Label>
+          <Typography variant='h2'>新しい習慣の作成</Typography>
+          <Label>一度作成した習慣は削除はできますが変更できません。</Label>
           <TextInput
             onChange={handleNameChange}
             value={state.name}
@@ -160,9 +162,10 @@ const DateWrap = styled.div`
   font-size: 1rem;
 `;
 
-const Label = styled.h3`
-  font-size: 1.4rem;
+const Label = styled.p`
+  font-size: 1rem;
   margin: 0;
+  color: #aaa;
 `;
 
 export { CreateHabit };
