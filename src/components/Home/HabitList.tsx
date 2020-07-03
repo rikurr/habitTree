@@ -87,7 +87,7 @@ export const HabitWrap = styled.div`
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 12px;
-  background: ${(p) => p.theme.palette.primary.main};
+  /* background: ${(p) => p.theme.palette.primary.main}; */
 `;
 
 export const HabitContent = styled.div`
@@ -96,7 +96,7 @@ export const HabitContent = styled.div`
 `;
 
 export const CustomLink = styled(Link)`
-  color: #fff;
+  color: #333;
   text-decoration: none;
 `;
 
@@ -104,8 +104,6 @@ export const CustomAvatar = styled(Avatar)`
   color: #fff;
   background: ${(p) => p.theme.palette.secondary.light};
   margin: 0 16px;
-  width: 60px;
-  height: 60px;
 `;
 
 export const CustomIcon = styled(FavoriteIcon)`
@@ -114,14 +112,14 @@ export const CustomIcon = styled(FavoriteIcon)`
 
 export const Title = styled.p`
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   margin: 0;
 `;
 
 export const SubTitle = styled.p`
   font-size: 1rem;
   margin: 0;
-  color: #fefefe;
+  color: #aaa;
 `;
 
 export const HabitFotter = styled.div`
@@ -131,7 +129,7 @@ export const HabitFotter = styled.div`
 `;
 
 export const SuccessfulText = styled.span`
-  color: ${(p) => p.theme.palette.secondary.light};
+  color: ${(p) => p.theme.palette.primary.main};
   font-weight: bold;
 `;
 

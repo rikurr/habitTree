@@ -6,7 +6,6 @@ import {
 } from '@reduxjs/toolkit';
 
 import { userReducer, flashMessagesReducer, habitReducer } from './modules';
-import counterReducer from '../features/counter/counterSlice';
 
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
@@ -14,7 +13,6 @@ const customizedMiddleware = getDefaultMiddleware({
 });
 
 const rootReducer = () => ({
-  counter: counterReducer,
   users: userReducer,
   flashMessages: flashMessagesReducer,
   hibits: habitReducer,

@@ -11,7 +11,7 @@ const Footer = () => {
       <p>
         Copyright &copy; 2020{' '}
         <a href='https://github.com/riku0329/habit' target='blank'>
-          progress tree
+          habitTree
         </a>
         . All rights reserved.
       </p>
