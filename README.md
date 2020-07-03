@@ -1,44 +1,58 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+# habitTree
 
-## Available Scripts
+独学で4ヶ月Reactを勉強した成果物です。
 
-In the project directory, you can run:
+## 概要
 
-### `yarn start`
+習慣の継続や目標の達成を活動記録として共有できるアプリです。
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Demo
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## 機能一覧
 
-### `yarn test`
+- ユーザー登録機能
+- Google 認証機能
+- 習慣の作成機能
+- 活動の振り返り機能
+- 習慣の共有機能
+- 習慣化のLevel機能
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 使用技術一覧
 
-### `yarn build`
+### 言語
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Typescript
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### ライブラリ
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- React
+- Redux-toolkit
 
-### `yarn eject`
+### データベース
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Firestore
+- Firebase Auth
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### デプロイ
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Firebase Hosting
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### デザイン
 
-## Learn More
+- Material-ui
+- styled-components
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### アプリの状態管理
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+grobal state
+
+- Redux-Toolkit
+
+local state
+
+- useState
+- useImmerReducer
+
+### 開発環境
+
+- create-react-app #myApp --template redux-typescript
