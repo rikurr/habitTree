@@ -8,3 +8,4 @@ export * from './FlashMessage';
 export * from './LiveValidateMessage';
 export * from './LoadingIcon';
 export * from './ProgressChart';
+export * from './TextColor'

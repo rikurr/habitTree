@@ -12,8 +12,8 @@ const Layout: FC<Props> = ({ children, wide }) => {
 const LayoutWrap = styled.main<Props>`
   margin: 100px auto;
   max-width: ${(p) => (p.wide ? '1900px' : '960px')};
-  width: 90%;
-  @media (min-width: 768px) {
+  width: 94%;
+  @media (min-width: 1000px) {
     width: 100%;
   }
 `;

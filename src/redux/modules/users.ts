@@ -12,9 +12,9 @@ type CurrentUserProps = {
   created_at: any;
   updated_at: any;
   hasHabit: number;
-  maxHabit: number;
   likeHabitCount: number;
   points: number;
+  level: number;
 };
 
 type UserState = {
@@ -33,9 +33,9 @@ const initialState: UserState = {
     created_at: null,
     updated_at: null,
     hasHabit: 0,
-    maxHabit: 0,
     likeHabitCount: 0,
     points: 0,
+    level: 0,
   },
 };
 
@@ -88,9 +88,9 @@ const createUserDocument = async (user: any, addData?: any) => {
       created_at: timestamp,
       updated_at: timestamp,
       hasHabit: 0,
-      maxHabit: 1,
       likeHabitCount: 0,
       points: 0,
+      level: 1,
       ...addData,
     };
     await userRef.set(userInitialDate);
@@ -170,9 +170,9 @@ export const signOut = (): AppThunk => async (dispatch) => {
     created_at: null,
     updated_at: null,
     hasHabit: 0,
-    maxHabit: 0,
     likeHabitCount: 0,
     points: 0,
+    level: 0,
   };
   auth.signOut().then(() => {
     dispatch(signOutSuccess(initialState));

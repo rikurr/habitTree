@@ -3,7 +3,7 @@ import { Typography, Grid } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { selectHabit } from '../../redux/modules/habits';
 import { selectUser } from '../../redux/modules/users';
-import { MarginTop, ProgressChart } from '../UIkit';
+import { MarginTop, ProgressChart, SecondaryText } from '../UIkit';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
@@ -12,19 +12,25 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 const HabitList = () => {
   const habits = useSelector(selectHabit);
   const user = useSelector(selectUser);
+
+  console.log(habits.myHabit.length);
   return (
     <>
-      <Typography variant='h2'>Total Points</Typography>
+      <Typography variant='h2'>Hello,{user.currentUser.username}</Typography>
+      <MarginTop mt={1} />
+      <p style={{ fontSize: 18 }}>Level {user.currentUser.level}</p>
       <MarginTop mt={4} />
       <ProgressChart
-        title='Level'
-        message='まずは21回達成しよう'
+        title='Total Points'
+        message='まずは21日達成を目標にしよう!'
         from={12}
         to={21}
         progress={false}
       />
       <MarginTop mt={4} />
-      <Typography variant='h2'>MY Habits</Typography>
+      <Typography variant='h2'>
+        MY Habits <SecondaryText>{habits.myHabit.length}</SecondaryText>
+      </Typography>
       <MarginTop mt={4} />
       <Grid container spacing={1}>
         {habits.myHabit.map((habit) => (
@@ -107,5 +113,7 @@ export const SuccessfulText = styled.span`
   color: ${(p) => p.theme.palette.secondary.light};
   font-weight: bold;
 `;
+
+
 
 export { HabitList };

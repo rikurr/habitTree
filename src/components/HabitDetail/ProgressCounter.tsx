@@ -1,14 +1,18 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import { selectHabit } from '../../redux/modules/habits';
+import { MarginTop } from '../UIkit';
 
 const ProgressCounter = () => {
   const habits = useSelector(selectHabit);
   return (
     <>
-      <Grid style={{ marginTop: 30 }} container spacing={1}>
+      <MarginTop mt={2} />
+      <Typography variant='h2'>Progress</Typography>
+      <MarginTop mt={2} />
+      <Grid container spacing={1}>
         <Grid style={{ height: 250 }} item xs={6} sm={6}>
           <CustomPaper>
             <Count>{habits.habitDetail.progressCount}</Count>

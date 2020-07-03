@@ -11,7 +11,7 @@ const Home = () => {
   const habits = useSelector(selectHabit);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  const { hasHabit, maxHabit } = user.currentUser;
+  const { hasHabit } = user.currentUser;
   useEffect(() => {
     if (hasHabit > 0) {
       dispatch(fetchMyHabits());
@@ -19,7 +19,7 @@ const Home = () => {
   }, [hasHabit, dispatch]);
   return (
     <Page title='Home'>
-      {hasHabit < maxHabit ? <FirstView /> : null}
+      {hasHabit < 1 ? <FirstView /> : null}
       {habits.isFetching ? <LoadingIcon /> : <HabitList />}
     </Page>
   );

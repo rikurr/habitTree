@@ -15,15 +15,19 @@ import { selectUser } from './redux/modules/users';
 
 const Router = () => {
   const user = useSelector(selectUser);
-  const { hasHabit, maxHabit } = user.currentUser;
+  const { hasHabit, level } = user.currentUser;
   return (
     <Switch>
       <Route exact path='/homeguest' component={HomeGuest} />
       <Route exact path='/signin' component={SignInAndSignUp} />
       <Auth>
         <Route exact path='/' component={Home} />
-        <Route exact path='/user/:userId/habit/:habitId' component={HabitDetail} />
-        {hasHabit < maxHabit && (
+        <Route
+          exact
+          path='/user/:userId/habit/:habitId'
+          component={HabitDetail}
+        />
+        {hasHabit < level && (
           <>
             <Route exact path='/create-habit' component={CreateHabit} />
           </>

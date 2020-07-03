@@ -15,8 +15,8 @@ export const theme = createMuiTheme({
       contrastText: '#fff',
     },
     background: {
-      paper: '#b2dfdb',
-      default: '#e0f2f1',
+      paper: '#fff',
+      default: '#fff',
     },
   },
   typography: {
@@ -61,9 +61,6 @@ export const theme = createMuiTheme({
       fontWeight: 'bold',
       fontSize: '1rem',
       fontFamily: 'Montserrat',
-      borderBottom: '2px solid #26a69a',
-      display: 'inline',
-      paddingBottom: 8,
       '@media (min-width:600px)': {
         fontSize: '1.5rem',
       },

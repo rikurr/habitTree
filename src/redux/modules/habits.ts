@@ -8,6 +8,7 @@ import {
   FirebaseFieldValue,
   createRef,
 } from '../../firebase/index';
+import { ReviewState } from '../../components/HabitDetail';
 
 type HabitProps = {
   id: string;
@@ -23,7 +24,7 @@ type HabitProps = {
     userRef: any;
     username: string;
   };
-  reports: any[];
+  reviews: any[];
 };
 
 type HabitState = {
@@ -51,7 +52,7 @@ const initialState: HabitState = {
       userRef: null,
       username: '',
     },
-    reports: [],
+    reviews: [],
   },
 };
 
@@ -77,7 +78,7 @@ export const habitsSlice = createSlice({
       state.habitDetail = action.payload;
       state.isFetching = false;
       // 最新のレポート順
-      state.habitDetail.reports = state.habitDetail.reports.sort(
+      state.habitDetail.reviews = state.habitDetail.reviews.sort(
         (a: any, b: any) => {
           if (a.created_at.seconds > b.created_at.seconds) return -1;
           if (a.created_at.seconds < b.created_at.seconds) return 1;
@@ -136,22 +137,15 @@ export const createHabit = async (data: CreateHabitProps, target?: string) => {
       created_at: FirebaseTimestamp.now(),
       progressCount: 0,
       successfulCount: 0,
-      reports: [],
+      reviews: [],
       user: {
         uid: uid,
         userRef: userRef,
       },
     });
-    if (target) {
-      batch.update(userRef, {
-        hasHabit: FirebaseFieldValue.increment(1),
-        target: target,
-      });
-    } else {
-      batch.update(userRef, {
-        hasHabit: FirebaseFieldValue.increment(1),
-      });
-    }
+    batch.update(userRef, {
+      hasHabit: FirebaseFieldValue.increment(1),
+    });
     return await batch.commit().then(() => {
       return '成功';
     });
@@ -191,6 +185,61 @@ export const fetchhabitDetail = (
     dispatch(setHabitDetail(data));
   } catch (error) {
     dispatch(isFetchingFailure());
+    throw new Error(error);
+  }
+};
+
+export const createReview = async (
+  userId: string,
+  habitId: string,
+  data: ReviewState
+) => {
+  if (!userId) return;
+  const batch = db.batch();
+  const userRef = createRef('users', userId);
+  const habitRef = userRef.collection('habits').doc(habitId);
+  try {
+    let progressIncrement;
+    let successfulIncrement;
+    const created_at = FirebaseTimestamp.now();
+    const { checkDate, progress, note, repeat } = data;
+    const points = (repeat: number) => {
+      if (repeat === 1) {
+        return 1;
+      } else if (repeat === 3) {
+        return 2;
+      } else {
+        return 5;
+      }
+    };
+    if (progress === '成功') {
+      progressIncrement = FirebaseFieldValue.increment(1);
+      successfulIncrement = FirebaseFieldValue.increment(1);
+    } else {
+      progressIncrement = FirebaseFieldValue.increment(1);
+      successfulIncrement = FirebaseFieldValue.increment(0);
+    }
+    batch.set(
+      habitRef,
+      {
+        checkDate,
+        progressCount: progressIncrement,
+        successfulCount: successfulIncrement,
+        reviews: FirebaseFieldValue.arrayUnion({
+          progress,
+          note,
+          created_at,
+        }),
+      },
+      { merge: true }
+    );
+    batch.update(userRef, {
+      points: points(repeat),
+    });
+    return await batch.commit().then(() => {
+      return '成功';
+    });
+  } catch (error) {
     throw new Error(error);
   }
 };

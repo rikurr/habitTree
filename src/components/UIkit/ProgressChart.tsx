@@ -13,7 +13,7 @@ type Props = {
   from: number;
   message: string;
   progress: boolean;
-  title: 'Level' | 'Progress'
+  title: 'Total Points' | 'Progress';
 };
 
 const ProgressChart = (props: Props) => {
@@ -34,11 +34,12 @@ const ProgressChart = (props: Props) => {
         <div className='progress-percent'>
           <div className='progress-percent-wrap'>
             {props.progress ? (
-              <span>{raito ? raito : 0}%</span>
+              <Typography variant='h4'>{raito ? raito : 0}%</Typography>
             ) : (
-              <span style={{ fontSize: '14px' }}>
+              <Typography variant='h4'>
+                {' '}
                 {from} / {to}
-              </span>
+              </Typography>
             )}
           </div>
         </div>

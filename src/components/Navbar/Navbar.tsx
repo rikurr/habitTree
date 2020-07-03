@@ -50,7 +50,7 @@ const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { hasHabit, maxHabit } = user.currentUser;
+  const { hasHabit, level } = user.currentUser;
   const [path, setPath] = useState<string>('');
   const [state, setState] = useState<NavbarState>({
     right: false,
@@ -110,7 +110,7 @@ const Navbar = () => {
             primary={user.isSignedIn ? 'サインアウト' : 'サインイン'}
           />
         </ListItem>
-        {hasHabit < maxHabit && (
+        {hasHabit < level && (
           <ListItem onClick={() => history.push('/create-habit')} button>
             <ListItemIcon>
               <AddCircle />
@@ -132,7 +132,9 @@ const Navbar = () => {
           position='fixed'
         >
           <Toolbar className={classes.navInner}>
-            {path.replace('/', '') && path !== 'create-habit' ? (
+            {path.replace('/', '') &&
+            path !== 'create-habit' &&
+            path !== 'homeguest' ? (
               <IconButton onClick={() => history.goBack()}>
                 <ArrowBack />
               </IconButton>

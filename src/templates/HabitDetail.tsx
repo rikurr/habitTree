@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   Page,
-  LoadingIcon,
   CustomButton,
   ProgressChart,
   MarginTop,
+  LoadingIcon,
 } from '../components/UIkit';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Box,
   Typography,
   Grid,
   List,
@@ -23,21 +22,25 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { selectUser } from '../redux/modules/users';
 import { selectHabit, fetchhabitDetail } from '../redux/modules/habits';
 import { getDate } from '../utils/dateFormat';
-import { ProgressCounter } from '../components/HabitDetail';
+import {
+  ProgressCounter,
+  CreateReview,
+  Review,
+} from '../components/HabitDetail';
 import styled from 'styled-components';
+import { NotFuond } from './NotFuond';
 
 const HabitDetail = () => {
   const { userId, habitId } = useParams();
   const user = useSelector(selectUser);
   const habits = useSelector(selectHabit);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const today = getDate(0);
 
   useEffect(() => {
     dispatch(fetchhabitDetail(userId, habitId));
-  }, []);
+  }, [userId, habitId, dispatch]);
 
   const listItems = [
     {
@@ -75,24 +78,38 @@ const HabitDetail = () => {
     },
   ];
 
+  if (!habits.habitDetail.id && !habits.isFetching) {
+    return <NotFuond />;
+  }
+  if (habits.isFetching) {
+    return <LoadingIcon />;
+  }
+
+  if (habits.habitDetail.checkDate) {
+    if (
+      today >= habits.habitDetail.checkDate &&
+      user.currentUser.uid === habits.habitDetail.user.uid
+    ) {
+      return <CreateReview />;
+    }
+  }
+
   return (
     <Page title='Habit'>
-      <Typography style={{ textAlign: 'center' }} variant='h2'>
+      <Typography style={{ textAlign: 'center' }} variant='h1'>
         {habits.habitDetail.user.username}
       </Typography>
-      <Grid container style={{ marginTop: 24 }}>
+      <MarginTop mt={2} />
+      <Grid container spacing={2}>
         <Grid item xs={12} sm={12}>
-          <Typography style={{ textAlign: 'center' }} variant='h3'>
-            {habits.habitDetail.name}
-          </Typography>
+          <Typography variant='h3'>{habits.habitDetail.name}</Typography>
           <ProgressCounter />
         </Grid>
-        <div style={{ marginRight: 12 }} />
-        <Grid style={{ marginTop: 12 }} item xs={12} sm={12}>
+        <Grid item xs={12} sm={12}>
           <ProgressChart
             title='Progress'
-            from={habits.habitDetail.progressCount}
-            to={habits.habitDetail.successfulCount}
+            from={habits.habitDetail.successfulCount}
+            to={habits.habitDetail.progressCount}
             message='達成率'
             progress={true}
           />
@@ -109,7 +126,7 @@ const HabitDetail = () => {
           </List>
         ))}
       </HabitInfo>
-      {1 > 0 ? null : null}
+      {habits.habitDetail.reviews.length > 0 ? <Review /> : null}
       <MarginTop mt={2} />
       <CustomButton
         label='削除する'
