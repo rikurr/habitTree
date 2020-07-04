@@ -29,6 +29,7 @@ const Router = () => {
           component={HabitDetail}
         />
         <Route exact path='/feed' component={Feed} />
+
         {hasHabit < level && (
           <>
             <Route exact path='/create-habit' component={CreateHabit} />

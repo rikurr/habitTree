@@ -13,7 +13,11 @@ import {
   isValidEmailFormat,
   isValidRequiredInput,
 } from '../../utils/validates';
-import { signUp } from '../../redux/modules/users';
+import {
+  signUp,
+  CurrentUserProps,
+  signInSuccess,
+} from '../../redux/modules/users';
 
 type SignUpState = {
   username: string;
@@ -95,9 +99,11 @@ const SignUp = () => {
     }
     const { username, email, password } = state;
     try {
-      disaptch(signUp(username, email, password));
-      immerDispatch({ type: 'resetValue' });
-      history.push('/');
+      signUp(username, email, password).then(async () => {
+        // disaptch(signInSuccess(data as CurrentUserProps));
+        immerDispatch('resetValue');
+        history.push('/');
+      });
     } catch (error) {
       immerDispatch({
         type: 'valideteError',

@@ -69,7 +69,7 @@ const SignIn = () => {
 
   const [state, immerDispatch] = useImmerReducer(reducer, initialState);
   const history = useHistory();
-  const disaptch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleSubmit = async () => {
     immerDispatch({ type: 'clickButton' });
@@ -81,13 +81,15 @@ const SignIn = () => {
       return;
     }
     try {
-      await disaptch(signIn(state.email, state.password));
-      immerDispatch({ type: 'resetValue' });
-      history.push('/');
+      signIn(state.email, state.password).then(() => {
+        immerDispatch({ type: 'resetValue' });
+        history.push('/');
+        dispatch(flashMessage('サインインしました'));
+      });
     } catch (error) {
       immerDispatch({
         type: 'validateError',
-        payload: 'ログインに失敗しました',
+        payload: 'サインインに失敗しました',
       });
       alert('error');
     }
@@ -100,13 +102,15 @@ const SignIn = () => {
         Math.floor(Math.random() * (max + 1 - min)) + min
       }`;
       const guestEmail = `${guestName}@test.com`;
-      await disaptch(signUp(guestName, guestEmail, 'password'));
-      immerDispatch({ type: 'resetValue' })
-      history.push('/');
+
+      signUp(guestName, guestEmail, 'password').then(async () => {
+        history.push('/');
+        dispatch(flashMessage('ゲストユーザーでサインインしました'));
+      });
     } catch (error) {
       immerDispatch({
         type: 'validateError',
-        payload: 'ゲストユーザーログインに失敗しました',
+        payload: 'ゲストユーザーサインインに失敗しました',
       });
     }
   };
@@ -115,12 +119,12 @@ const SignIn = () => {
     try {
       signInWithGoogle().then(async () => {
         history.push('/');
-        disaptch(flashMessage('Google認証でサインインしました'));
+        dispatch(flashMessage('Google認証でサインインしました'));
       });
     } catch (error) {
       immerDispatch({
         type: 'validateError',
-        payload: 'Google認証ログインに失敗しました',
+        payload: 'Google認証サインインに失敗しました',
       });
     }
   };

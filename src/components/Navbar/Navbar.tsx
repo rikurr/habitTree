@@ -80,16 +80,6 @@ const Navbar = () => {
       component='div'
     >
       <List>
-        <ListItem button>
-          <ListItemIcon>
-            {' '}
-            <Search />
-          </ListItemIcon>
-          <ListItemText className={classes.serach} secondary='検索' />
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
         <ListItem onClick={() => history.push('/')} button>
           <ListItemIcon>
             <Home />

@@ -8,10 +8,11 @@ import {
   FirebaseFieldValue,
 } from '../../firebase/index';
 import { flashMessage } from './flashMessages';
+import { setInitialState } from './habits';
 
 const usersRef = db.collection('users');
 
-type CurrentUserProps = {
+export type CurrentUserProps = {
   uid: string;
   username: string;
   email: string;
@@ -59,7 +60,9 @@ export const usersSlice = createSlice({
       }
     },
     signInSuccess: (state, action: PayloadAction<CurrentUserProps>) => {
-      state.currentUser = action.payload;
+      if (action.payload) {
+        state.currentUser = action.payload;
+      }
       state.isSignedIn = true;
       state.isFetching = false;
     },
@@ -121,9 +124,7 @@ export const listenAuthState = (): AppThunk => async (dispatch) => {
   });
 };
 
-export const signIn = (email: string, password: string): AppThunk => async (
-  dispatch
-) => {
+export const signIn = async (email: string, password: string) => {
   return auth
     .signInWithEmailAndPassword(email, password)
     .then((result) => {
@@ -131,36 +132,26 @@ export const signIn = (email: string, password: string): AppThunk => async (
       if (!user) {
         throw new Error('ユーザーIDを取得できません');
       }
-      const uid = user.uid;
-      db.collection('users')
-        .doc(uid)
-        .get()
-        .then((snapshot) => {
-          const data = snapshot.data() as CurrentUserProps;
-          dispatch(signInSuccess(data));
-        })
-        .then(() => {
-          dispatch(flashMessage('サインインしました'));
-        });
     })
     .catch(() => {
       throw new Error('サインインに失敗しました。');
     });
 };
 
-export const signUp = (
+export const signUp = async (
   username: string,
   email: string,
   password: string
-): AppThunk => async (dispatch) => {
+) => {
   return auth
     .createUserWithEmailAndPassword(email, password)
-    .then((result) => {
+    .then(async (result) => {
       const user = result.user;
       if (user) {
-        createUserDocument(user, { username }).then(() => {
-          dispatch(flashMessage('アカウントを登録しました'));
+        await user?.updateProfile({
+          displayName: username,
         });
+        return await createUserDocument(user, { username });
       }
     })
     .catch(() => {
@@ -169,7 +160,7 @@ export const signUp = (
 };
 
 export const signOut = (): AppThunk => async (dispatch) => {
-  const initialState = {
+  const userInitialState = {
     uid: '',
     username: '',
     email: '',
@@ -180,8 +171,10 @@ export const signOut = (): AppThunk => async (dispatch) => {
     points: 0,
     level: 0,
   };
+  const habit: any = [];
   auth.signOut().then(() => {
-    dispatch(signOutSuccess(initialState));
+    dispatch(signOutSuccess(userInitialState));
+    dispatch(setInitialState(habit));
   });
 };
 

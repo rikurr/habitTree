@@ -20,7 +20,7 @@ const Home = () => {
   return (
     <Page title='Home'>
       {hasHabit < 1 ? <FirstView /> : null}
-      {habits.isFetching ? <LoadingIcon /> : <HabitList />}
+      {habits.isFetching || hasHabit < 1 ? <LoadingIcon /> : <HabitList />}
     </Page>
   );
 };

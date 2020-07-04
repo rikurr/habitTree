@@ -83,6 +83,9 @@ export const habitsSlice = createSlice({
     isFetchingFailure: (state) => {
       state.isFetching = false;
     },
+    setInitialState: (state, action: PayloadAction<any>) => {
+      state.myHabit = action.payload
+    },
     setHabitDetail: (state, action: PayloadAction<HabitProps>) => {
       state.habitDetail = action.payload;
       state.isFetching = false;
@@ -104,6 +107,7 @@ export const {
   isFetchingFailure,
   setHabitDetail,
   isFetchingStart,
+  setInitialState
 } = habitsSlice.actions;
 
 export const fetchMyHabits = (): AppThunk => async (dispatch, getState) => {
