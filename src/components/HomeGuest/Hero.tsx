@@ -15,12 +15,12 @@ const Hero = () => {
             確実に目標を達成するための習慣化アプリ
           </Typography>
           <SubTitle>
-            一つの習慣化に焦点をあて、より高度化を目指し自分の成長を確認できるアプリです。
+            一つのことを習慣化することに焦点を当てた、より高度化を目指し自分の成長を確認できたり共有できるアプリです。
           </SubTitle>
           <CustomButton
             color='secondary'
             onClick={() => history.push('/signin')}
-            label='サインインまたはサインアップ'
+            label='サインアップ'
             half='half'
           />
         </TitleWrap>

@@ -71,7 +71,7 @@ const HabitList = () => {
                 </HabitContent>
                 <HabitFotter>
                   <p>Check day</p>
-                  <p>{habit.checkDate}</p>
+                  <SecondaryText>{habit.checkDate}</SecondaryText>
                 </HabitFotter>
               </CustomLink>
             </HabitWrap>
@@ -87,7 +87,6 @@ export const HabitWrap = styled.div`
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 12px;
-  /* background: ${(p) => p.theme.palette.primary.main}; */
 `;
 
 export const HabitContent = styled.div`
