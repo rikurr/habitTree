@@ -10,22 +10,17 @@ import {
   makeStyles,
   List,
   ListItem,
-  Divider,
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import {
-  ArrowBack,
-  AccountCircle,
-  Home,
-  Search,
-  AddCircle,
-} from '@material-ui/icons';
+import AddIcon from '@material-ui/icons/Add';
+import Tooltip from '@material-ui/core/Tooltip';
+import Fab from '@material-ui/core/Fab';
+import { ArrowBack, AccountCircle, Home } from '@material-ui/icons';
 import SortIcon from '@material-ui/icons/Sort';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, signOut } from '../../redux/modules/users';
-
 const useStyles = makeStyles({
   menuSliderWrap: {
     width: 250,
@@ -35,9 +30,6 @@ const useStyles = makeStyles({
     maxWidth: 960,
     width: '100%',
     margin: '0 auto',
-  },
-  serach: {
-    borderBottom: '1px solid #aaa',
   },
 });
 
@@ -100,14 +92,6 @@ const Navbar = () => {
             primary={user.isSignedIn ? 'サインアウト' : 'サインイン'}
           />
         </ListItem>
-        {hasHabit < level && (
-          <ListItem onClick={() => history.push('/create-habit')} button>
-            <ListItemIcon>
-              <AddCircle />
-            </ListItemIcon>
-            <ListItemText primary='習慣を作成' />
-          </ListItem>
-        )}
       </List>
     </Box>
   );
@@ -137,6 +121,17 @@ const Navbar = () => {
             >
               habit<span style={{ color: '#00796b' }}>Tree</span>
             </Typography>
+            {hasHabit < level && (
+              <Tooltip title='習慣を作成する' aria-label='add'>
+                <Fab
+                  onClick={() => history.push('/create-habit')}
+                  size='small'
+                  color='primary'
+                >
+                  <AddIcon />
+                </Fab>
+              </Tooltip>
+            )}
             <IconButton onClick={toggleSlider('right', true)}>
               <MenuIcon />
             </IconButton>

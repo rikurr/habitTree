@@ -27,6 +27,7 @@ const HabitList = () => {
       <LevelText>
         Level <SecondaryText>{currentUser.level}</SecondaryText>
       </LevelText>
+      <LevelText>習慣を{currentUser.level}つまで所持できます。</LevelText>
       <MarginTop mt={4} />
       <ProgressChart
         title='Next Level'
@@ -87,6 +88,10 @@ export const HabitWrap = styled.div`
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 12px;
+  transition: .4s;
+  :hover {
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+  }
 `;
 
 export const HabitContent = styled.div`

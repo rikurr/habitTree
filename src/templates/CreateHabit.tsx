@@ -18,6 +18,7 @@ import { selectUser } from '../redux/modules/users';
 import { useSelector, useDispatch } from 'react-redux';
 import { flashMessage } from '../redux/modules/flashMessages';
 import { createHabit } from '../redux/modules/habits';
+import { featureHabits } from '../utils';
 
 const today = new Date();
 
@@ -50,6 +51,9 @@ const CreateHabit = () => {
       case 'repeatChange':
         draft.repeat = parseInt(action.payload);
         draft.checkDate = getDate(parseInt(action.payload));
+        return;
+      case 'featureHabit':
+        draft.name = action.payload;
         return;
     }
   };
@@ -91,15 +95,34 @@ const CreateHabit = () => {
     <Page title='Create Habit'>
       <Box p={6}>
         <HabitForm onSubmit={handleSubmit}>
-          <MarginTop mt={6} />
           <Typography variant='h2'>新しい習慣の作成</Typography>
-          <Label>一度作成した習慣は削除はできますが変更できません。</Label>
+          <Label>一度作成した習慣は削除できますが変更できません。</Label>
+          <MarginTop mt={4} />
           <TextInput
             onChange={handleNameChange}
             value={state.name}
             type='text'
-            label='（例）よく寝る、毎朝15分瞑想'
+            label='習慣の名前'
           />
+          <MarginTop mt={4} />
+          <FormLabel>おすすめ</FormLabel>
+          <MarginTop mt={2} />
+          <HabitList>
+            {featureHabits.map((habit, i) => (
+              <HabitItem
+                key={i}
+                onClick={() =>
+                  immerDispatch({ type: 'featureHabit', payload: habit.title })
+                }
+              >
+                <img src={habit.image} alt='habit' />
+                <HabitContent>
+                  <p>{habit.title}</p>
+                </HabitContent>
+              </HabitItem>
+            ))}
+          </HabitList>
+
           <MarginTop mt={6} />
           <FormLabel component='legend'>習慣化の振り返り頻度</FormLabel>
           <RadioGroup
@@ -165,7 +188,51 @@ const DateWrap = styled.div`
 const Label = styled.p`
   font-size: 1rem;
   margin: 0;
-  color: #aaa;
+  color: ${(p) => p.theme.palette.secondary.main};
+`;
+
+const HabitList = styled.div`
+  width: 100%;
+  height: 200px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  background: #efefef;
+  @media (min-width: 600px) {
+    height: 230px;
+  }
+`;
+const HabitItem = styled.div`
+  min-width: 150px;
+  height: 200px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding-top: 16px;
+  margin-right: 12px;
+  background: #fff;
+  :hover {
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+  }
+  img {
+    width: 100%;
+    height: 100px;
+  }
+  @media (min-width: 600px) {
+    min-width: 250px;
+    height: 200px;
+  }
+`;
+
+const HabitContent = styled.div`
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
 `;
 
 export { CreateHabit };
