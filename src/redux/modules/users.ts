@@ -27,13 +27,31 @@ export type CurrentUserProps = {
 type UserState = {
   isSignedIn: boolean;
   isFetching: boolean;
+  usersFetching: boolean;
+  userFetching: boolean;
+  userList: CurrentUserProps[];
   currentUser: CurrentUserProps;
+  user: CurrentUserProps;
 };
 
 const initialState: UserState = {
   isSignedIn: false,
   isFetching: true,
+  usersFetching: true,
+  userFetching: true,
+  userList: [],
   currentUser: {
+    uid: '',
+    username: '',
+    email: '',
+    created_at: null,
+    updated_at: null,
+    hasHabit: 0,
+    likeHabitCount: 0,
+    points: 0,
+    level: 0,
+  },
+  user: {
     uid: '',
     username: '',
     email: '',
@@ -73,6 +91,17 @@ export const usersSlice = createSlice({
       state.isSignedIn = false;
       state.currentUser = action.payload;
     },
+    fetchUsersSuccess: (state, action) => {
+      state.userList = action.payload;
+      state.usersFetching = false;
+    },
+    fetchUserStart: (state) => {
+      state.userFetching = true;
+    },
+    fetchUserSuccess: (state, action) => {
+      state.user = action.payload;
+      state.userFetching = false;
+    },
   },
 });
 
@@ -81,6 +110,9 @@ export const {
   signInSuccess,
   signInFailure,
   signOutSuccess,
+  fetchUserStart,
+  fetchUsersSuccess,
+  fetchUserSuccess,
 } = usersSlice.actions;
 
 const createUserDocument = async (user: any, addData?: any) => {
@@ -194,6 +226,32 @@ export const levelUp = (): AppThunk => async (dispatch, getState) => {
           flashMessage(`レベルが上がりました!Habitをメニューから作成できます。`)
         );
       });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const fetchUsers = (): AppThunk => async (dispatch) => {
+  try {
+    const snapshots = await usersRef.limit(20).orderBy('level', 'desc').get();
+    const userList: any = [];
+    snapshots.forEach((snapshot) => {
+      const data = snapshot.data();
+      userList.push(data);
+    });
+    dispatch(fetchUsersSuccess(userList));
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const fetchUser = (uid: string): AppThunk => async (dispatch) => {
+  dispatch(fetchUserStart());
+  try {
+    usersRef.doc(uid).onSnapshot((doc) => {
+      const data = doc.data() as CurrentUserProps;
+      dispatch(fetchUserSuccess(data));
+    });
   } catch (error) {
     throw new Error(error);
   }

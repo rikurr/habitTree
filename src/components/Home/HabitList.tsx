@@ -137,7 +137,7 @@ export const SuccessfulText = styled.span`
   font-weight: bold;
 `;
 
-const LevelText = styled.p`
+export const LevelText = styled.p`
   font-weight: bold;
   color: #aaa;
   font-size: 1.4rem;

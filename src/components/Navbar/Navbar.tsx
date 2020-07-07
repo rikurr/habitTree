@@ -13,6 +13,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
@@ -83,6 +84,12 @@ const Navbar = () => {
             <SortIcon />
           </ListItemIcon>
           <ListItemText primary='フィード' />
+        </ListItem>
+        <ListItem onClick={() => history.push('/rating')} button>
+          <ListItemIcon>
+            <TrendingUpIcon />
+          </ListItemIcon>
+          <ListItemText primary='レーティング' />
         </ListItem>
         <ListItem onClick={() => toggleAuth(user.isSignedIn)} button>
           <ListItemIcon>

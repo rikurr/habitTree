@@ -12,6 +12,8 @@ import {
   CreateHabit,
   HabitDetail,
   Feed,
+  Rating,
+  UserDetail,
 } from './templates';
 
 const Router = () => {
@@ -29,7 +31,8 @@ const Router = () => {
           component={HabitDetail}
         />
         <Route exact path='/feed' component={Feed} />
-
+        <Route exact path='/rating' component={Rating} />
+        <Route exact path='/user-detail/:uid' component={UserDetail} />
         {hasHabit < level && (
           <>
             <Route exact path='/create-habit' component={CreateHabit} />

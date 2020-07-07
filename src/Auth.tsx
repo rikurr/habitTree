@@ -9,7 +9,6 @@ const Auth: FC = ({ children }) => {
   const dispatch = useDispatch();
   const { isSignedIn, isFetching } = user;
   useEffect(() => {
-    console.log('hello');
     if (!isSignedIn) {
       dispatch(listenAuthState())
     }
