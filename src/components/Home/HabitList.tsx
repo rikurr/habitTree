@@ -13,17 +13,22 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { getExperience, getHabitMessage } from '../../utils/';
+import { getExperience, getHabitMessage, getDate } from '../../utils/';
 
 const HabitList = () => {
   const { myHabit } = useSelector(selectHabit);
   const { currentUser } = useSelector(selectUser);
   const dispatch = useDispatch();
 
+  const today = getDate(0);
+
   return (
     <>
       <Typography variant='h2'>Hello,{currentUser.username}</Typography>
       <MarginTop mt={1} />
+      {currentUser.level === 13 && (
+        <LevelText>LevelがMaxになりました。</LevelText>
+      )}
       <LevelText>
         Level <SecondaryText>{currentUser.level}</SecondaryText>
       </LevelText>
@@ -70,9 +75,15 @@ const HabitList = () => {
                     </SubTitle>
                   </div>
                 </HabitContent>
+                <MarginTop mt={2} />
                 <HabitFotter>
                   <p>Check day</p>
                   <SecondaryText>{habit.checkDate}</SecondaryText>
+                  {today >= habit.checkDate && (
+                    <SecondaryText style={{ fontWeight: 'bold' }}>
+                      振り返りを登録できます
+                    </SecondaryText>
+                  )}
                 </HabitFotter>
               </CustomLink>
             </HabitWrap>
@@ -88,7 +99,7 @@ export const HabitWrap = styled.div`
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 12px;
-  transition: .4s;
+  transition: 0.4s;
   :hover {
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
   }
@@ -130,6 +141,9 @@ export const HabitFotter = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 12px;
+  p {
+    margin: 0;
+  }
 `;
 
 export const SuccessfulText = styled.span`

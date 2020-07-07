@@ -4,6 +4,14 @@ const Experience = [
   { level: 3, points: 90 },
   { level: 4, points: 180 },
   { level: 5, points: 365 },
+  { level: 6, points: 400 },
+  { level: 7, points: 500 },
+  { level: 8, points: 600 },
+  { level: 9, points: 700 },
+  { level: 10, points: 800 },
+  { level: 11, points: 900 },
+  { level: 12, points: 1000 },
+  { level: 13, points: 1300 },
 ];
 
 const habitMessage = [
@@ -40,7 +48,7 @@ export const getExperience = (level: number): number => {
 export const getHabitMessage = (level: number): string => {
   let message = habitMessage.find((p) => p.level === level)?.message;
   if (!message) {
-    return (message = 'あたなの生活は良い習慣ばかりです。');
+    return (message = 'ここまでくると夢や目標が実現が見えてきたでしょう。');
   }
   return message;
 };

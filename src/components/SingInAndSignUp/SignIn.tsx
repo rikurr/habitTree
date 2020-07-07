@@ -95,25 +95,42 @@ const SignIn = () => {
     }
   };
 
-  const guestUserLogin = async () => {
+  // const guestUserLogin = async () => {
+  //   immerDispatch({ type: 'clickButton' });
+  //   try {
+  //     const guestName = `user${
+  //       Math.floor(Math.random() * (max + 1 - min)) + min
+  //     }`;
+  //     const guestEmail = `${guestName}@test.com`;
+
+  //     signUp(guestName, guestEmail, 'password').then(async () => {
+  //       history.push('/');
+  //       dispatch(flashMessage('ゲストユーザーでサインインしました'));
+  //     });
+  //   } catch (error) {
+  //     immerDispatch({
+  //       type: 'validateError',
+  //       payload: 'ゲストユーザーサインインに失敗しました',
+  //     });
+  //   }
+  // };
+
+  const guestUserLogin = async() => {
     immerDispatch({ type: 'clickButton' });
     try {
-      const guestName = `user${
-        Math.floor(Math.random() * (max + 1 - min)) + min
-      }`;
-      const guestEmail = `${guestName}@test.com`;
-
-      signUp(guestName, guestEmail, 'password').then(async () => {
+      signIn('react@gmail.com', 'password').then(() => {
+        immerDispatch({ type: 'resetValue' });
         history.push('/');
         dispatch(flashMessage('ゲストユーザーでサインインしました'));
       });
     } catch (error) {
       immerDispatch({
         type: 'validateError',
-        payload: 'ゲストユーザーサインインに失敗しました',
+        payload: 'サインインに失敗しました',
       });
+      alert('error');
     }
-  };
+  }
 
   const handleGoogleSignIn = async () => {
     try {

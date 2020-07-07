@@ -134,6 +134,7 @@ const Navbar = () => {
                   onClick={() => history.push('/create-habit')}
                   size='small'
                   color='primary'
+                  style={{ boxShadow: 'none' }}
                 >
                   <AddIcon />
                 </Fab>
