@@ -68,7 +68,7 @@ export const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    setCurrentUser: (state, action: PayloadAction<any>) => {
+    setCurrentUser: (state, action: PayloadAction<CurrentUserProps>) => {
       state.currentUser = action.payload;
       state.isFetching = false;
       if (action.payload) {
@@ -139,7 +139,7 @@ const createUserDocument = async (user: any, addData?: any) => {
   return userRef;
 };
 
-export const listenAuthState = (): AppThunk => async (dispatch) => {
+export const listenAuth = (): AppThunk => async (dispatch) => {
   return auth.onAuthStateChanged(async (user) => {
     if (user) {
       if (user.displayName) {
