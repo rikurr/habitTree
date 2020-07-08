@@ -8,13 +8,12 @@ service cloud.firestore {
       allow delete: if request.auth.uid == userId;
 
       match /habits/{habitId}{
-          allow read: if true;
-          allow write: if isAuthenticated();
+          allow read, write: if isAuthenticated();
         }
     }
 
     match /{path=**}/habits/{habitId} {
-      allow read: if true;
+      allow read: if isAuthenticated();
     }
 
      function isAuthenticated() {
