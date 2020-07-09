@@ -235,4 +235,4 @@ const HabitContent = styled.div`
   font-weight: bold;
 `;
 
-export { CreateHabit };
+export default CreateHabit;

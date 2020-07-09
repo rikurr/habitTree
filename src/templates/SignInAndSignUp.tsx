@@ -120,4 +120,4 @@ const AvatarImage = styled.img`
   width: 100%;
 `;
 
-export { SignInAndSignUp };
+export default SignInAndSignUp;

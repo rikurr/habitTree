@@ -152,4 +152,4 @@ const HabitInfo = styled.div`
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
 `;
 
-export { HabitDetail };
+export default HabitDetail;

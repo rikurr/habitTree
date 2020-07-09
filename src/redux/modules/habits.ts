@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk, RootState } from '../store';
 import '../../firebase/index';
-import { CreateHabitProps } from '../../templates';
+import { CreateHabitProps } from '../../templates/CreateHabit';
 import {
   db,
   FirebaseTimestamp,
@@ -84,7 +84,7 @@ export const habitsSlice = createSlice({
       state.isFetching = false;
     },
     setInitialState: (state, action: PayloadAction<any>) => {
-      state.myHabit = action.payload
+      state.myHabit = action.payload;
     },
     setHabitDetail: (state, action: PayloadAction<HabitProps>) => {
       state.habitDetail = action.payload;
@@ -107,7 +107,7 @@ export const {
   isFetchingFailure,
   setHabitDetail,
   isFetchingStart,
-  setInitialState
+  setInitialState,
 } = habitsSlice.actions;
 
 export const fetchMyHabits = (): AppThunk => async (dispatch, getState) => {
