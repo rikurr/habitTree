@@ -55,7 +55,7 @@ const TitleWrap = styled(Grid)`
 `;
 const SubTitle = styled.p`
   margin-top: 30px;
-  color: #777;
+  color: #333;
   @media (min-width: 600px) {
     font-size: 1.4rem;
   }

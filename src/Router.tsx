@@ -4,19 +4,14 @@ import { useSelector } from 'react-redux';
 import { selectUser } from './redux/modules/users';
 
 import Auth from './Auth';
-import {
-  Home,
-  HomeGuest,
-  NotFuond,
-  Feed,
-  Rating,
-  UserDetail,
-} from './templates';
+import { Home, Feed, Rating, UserDetail } from './templates';
 import { LoadingIcon } from './components/UIkit';
 
 const CreateHabit = React.lazy(() => import('./templates/CreateHabit'));
 const SignInAndSignUp = React.lazy(() => import('./templates/SignInAndSignUp'));
 const HabitDetail = React.lazy(() => import('./templates/HabitDetail'));
+const NotFuond = React.lazy(() => import('./templates/NotFuond'));
+const HomeGuest = React.lazy(() => import('./templates/HomeGuest'));
 
 const Router = () => {
   const user = useSelector(selectUser);

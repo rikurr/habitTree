@@ -17,4 +17,4 @@ const CustomLink = styled(Link)`
   color: ${p => p.theme.palette.primary.main};
 `
 
-export { NotFuond };
+export default NotFuond;

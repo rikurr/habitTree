@@ -11,4 +11,4 @@ const HomeGuest = () => {
   );
 };
 
-export { HomeGuest };
+export default HomeGuest;

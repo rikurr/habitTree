@@ -2,7 +2,7 @@ import React, { useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, listenAuth } from './redux/modules/users';
 import { LoadingIcon } from './components/UIkit';
-import { HomeGuest } from './templates';
+import HomeGuest from './templates/HomeGuest';
 
 const Auth: FC = ({ children }) => {
   const user = useSelector(selectUser);

@@ -32,7 +32,7 @@ import {
   Review,
 } from '../components/HabitDetail';
 import styled from 'styled-components';
-import { NotFuond } from './NotFuond';
+import NotFuond from './NotFuond';
 import { flashMessage } from '../redux/modules/flashMessages';
 
 const HabitDetail = () => {
