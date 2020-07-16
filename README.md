@@ -1,58 +1,26 @@
 # habitTree
 
-## 概要
-
+React + Redux-Toolkit + Firestoreで構築されたリポジトリです。
 習慣の継続や目標の達成を活動記録として共有できるアプリです。
-
-## Demo
 
 [demoアプリ](https://habit-tree.web.app/)
 
-## 機能一覧
+## Core packages
 
-- ユーザー登録機能
-- Google 認証機能
-- 習慣の作成機能
-- 活動の振り返り機能
-- 習慣の共有機能
-- 習慣化のLevel機能
+1. 状態管理 - Redux-Toolkit + useImmerReducer
+2. 静的型チェッカー - Typescript
+3. Styling - Styled Compoents + Material Ui
+4. DB - Firestore
 
-## 使用技術一覧
+## Features
 
-### 言語
+1. ログイン・新規登録
+2. Google 認証機能
+3. 習慣の作成機能
+4. 活動の振り返り機能
+5. 習慣の共有機能
+6. 習慣化のLevel機能
 
-- Typescript
-
-### ライブラリ
-
-- React
-- Redux-toolkit
-
-### データベース
-
-- Firestore
-- Firebase Auth
-
-### デプロイ
-
-- Firebase Hosting
-
-### デザイン
-
-- Material-ui
-- styled-components
-
-### アプリの状態管理
-
-grobal state
-
-- Redux-Toolkit
-
-local state
-
-- useState
-- useImmerReducer
-
-### 開発環境
+## 開発環境
 
 - create-react-app #myApp --template redux-typescript
