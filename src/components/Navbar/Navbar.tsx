@@ -62,6 +62,14 @@ const Navbar = () => {
     }
   };
 
+  const handlePath = (path: string, slider: string) => {
+    setState(() => ({
+      ...state,
+      [slider]: false,
+    }));
+    history.push(path);
+  };
+
   const toggleSlider = (slider: string, open: boolean) => () => {
     setState({ ...state, [slider]: open });
   };
@@ -71,21 +79,22 @@ const Navbar = () => {
       onClick={toggleSlider('slider', false)}
       className={classes.menuSliderWrap}
       component='div'
+      onKeyDown={toggleSlider('slider', false)}
     >
       <List>
-        <ListItem onClick={() => history.push('/')} button>
+        <ListItem onClick={() => handlePath('/', 'slider')} >
           <ListItemIcon>
             <Home />
           </ListItemIcon>
           <ListItemText primary='ホーム' />
         </ListItem>
-        <ListItem onClick={() => history.push('/feed')} button>
+        <ListItem onClick={() => handlePath('/feed', 'slider')} button>
           <ListItemIcon>
             <SortIcon />
           </ListItemIcon>
           <ListItemText primary='フィード' />
         </ListItem>
-        <ListItem onClick={() => history.push('/rating')} button>
+        <ListItem onClick={() => handlePath('/rating', 'slider')} button>
           <ListItemIcon>
             <TrendingUpIcon />
           </ListItemIcon>
