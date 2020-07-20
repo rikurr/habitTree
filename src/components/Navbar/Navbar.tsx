@@ -62,39 +62,31 @@ const Navbar = () => {
     }
   };
 
-  const handlePath = (path: string, slider: string) => {
-    setState(() => ({
-      ...state,
-      [slider]: false,
-    }));
-    history.push(path);
-  };
-
   const toggleSlider = (slider: string, open: boolean) => () => {
     setState({ ...state, [slider]: open });
   };
   const classes = useStyles();
   const sideList = (slider: string) => (
     <Box
-      onClick={toggleSlider('slider', false)}
+      onClick={toggleSlider('right', false)}
       className={classes.menuSliderWrap}
       component='div'
       onKeyDown={toggleSlider('slider', false)}
     >
       <List>
-        <ListItem onClick={() => handlePath('/', 'slider')} >
+        <ListItem onClick={() => history.push('/')}>
           <ListItemIcon>
             <Home />
           </ListItemIcon>
           <ListItemText primary='ホーム' />
         </ListItem>
-        <ListItem onClick={() => handlePath('/feed', 'slider')} button>
+        <ListItem onClick={() => history.push('/feed')} button>
           <ListItemIcon>
             <SortIcon />
           </ListItemIcon>
           <ListItemText primary='フィード' />
         </ListItem>
-        <ListItem onClick={() => handlePath('/rating', 'slider')} button>
+        <ListItem onClick={() => history.push('/rating')} button>
           <ListItemIcon>
             <TrendingUpIcon />
           </ListItemIcon>
